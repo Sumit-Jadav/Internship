@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    font-size: 62.5%;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+}
+body{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-content: center;
+}
+table{
+    width: 50rem;
+    height: 50rem;
+    background-color: lawngreen;
+}
+
+td{
+    background-color: black;
+}
+
+.traffic-contaier{
+    width: 9.3rem;
+    height: 6.3rem;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .1rem ;
+}
+.light{
+    width: 3rem;
+    height: 3rem;
+}
+.red{
+    background-color: red;
+}
+.green{
+    background-color: green;
+}
+.yellow{
+    background-color: yellow;
+}
+.black{
+    background-color: black;
+}
