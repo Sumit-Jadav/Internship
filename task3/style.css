@@ -1,0 +1,145 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Body */
+body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 30px;
+}
+
+/* Form Container */
+form {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 1100px;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Fieldset */
+fieldset {
+    border: none;
+    margin-bottom: 25px;
+    padding: 20px;
+    border-radius: 10px;
+    background: #f8f9fc;
+}
+
+/* Legend */
+legend {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2a5298;
+    padding: 5px 10px;
+}
+
+/* Labels */
+label {
+    font-size: 14px;
+    margin-right: 5px;
+    font-weight: 500;
+}
+
+/* Inputs & Select */
+input[type="text"],
+input[type="date"],
+select {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 5px rgba(42,82,152,0.4);
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th {
+    background: #2a5298;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+}
+
+td {
+    padding: 8px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+/* Checkbox & Radio */
+input[type="checkbox"],
+input[type="radio"] {
+    transform: scale(1.1);
+    margin-right: 5px;
+}
+
+/* Plus & Minus Buttons */
+input[type="button"] {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 8px;
+    transition: 0.3s;
+}
+
+#e-plus, #w-plus, #r-plus {
+    background: #28a745;
+    color: white;
+}
+
+#e-minus, #w-minus, #r-minus {
+    background: #dc3545;
+    color: white;
+}
+
+input[type="button"]:hover {
+    opacity: 0.8;
+}
+
+/* Submit Button */
+input[type="submit"] {
+    padding: 12px 40px;
+    background: #2a5298;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type="submit"]:hover {
+    background: #1e3c72;
+}
+
+/* Multi Select */
+select[multiple] {
+    height: 80px;
+}
