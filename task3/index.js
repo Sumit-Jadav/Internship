@@ -69,6 +69,43 @@ wminusBtn.addEventListener("click" , () => {
 
 
 
+let language = ["Hindi" , "Gujarati" , "English"];
+
+let languageTable = document.getElementById("language-table");
+language.forEach((ele,index) => {
+    let row = languageTable.insertRow();
+    row.insertCell(0).innerHTML = `${index + 1}`;
+    row.insertCell(1).innerHTML = `<input type="checkbox" name="isKnown${index+1}">${ele}`;
+    row.insertCell(2).innerHTML = `<input type="checkbox" name="read${index+1}" id="read${index+1}"></input>`
+    row.insertCell(3).innerHTML = `<input type="checkbox" name="write${index+1}" id="write${index+1}"></input>`
+    row.insertCell(4).innerHTML = `<input type="checkbox" name="speak${index+1}" id="speak${index+1}"></input>`
+})
+
+
+
+let techonologies = ["JAVA","PYTHON","PHP",".NET"];
+
+let techonologiesTable  =document.getElementById("techonologies-table");
+techonologies.forEach((ele,index) => {
+    let row = techonologiesTable.insertRow();
+    row.insertCell(0).innerHTML = `${index + 1}`;
+    row.insertCell(1).innerHTML = `<input type="checkbox" name="isChecked${index+1}">${ele}`;
+    row.insertCell(2).innerHTML = `<input type="checkbox" name="beginner${index+1}" id="beginner${index+1}"></input>`
+    row.insertCell(3).innerHTML = `<input type="checkbox" name="intermediate${index+1}" id="intermediate${index+1}"></input>`
+    row.insertCell(4).innerHTML = `<input type="checkbox" name="expert${index+1}" id="expert${index+1}"></input>`
+})
+
+
+
+
+
+
+
+
+
+
+
+
 let referenceTable = document.getElementById("reference-table");
 let rplusBtn = document.getElementById("r-plus");
 let rminusBtn = document.getElementById("r-minus");
