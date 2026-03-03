@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application</title>
+    <style>
+        input[type="button"]{
+            height: 1.5rem;
+            width: 1.5rem;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <form id="form" action="" method="post">
+        <div class="basic-container">
+            <fieldset>
+                <legend>Basic Details</legend>
+                <label for="fname">First Name</label>
+                <input type="text" name="fname" id="fname">
+                <label for="lname">Last Name</label>
+                <input type="text" name="lname" id="lname">
+                <br>
+                <br>
+                <label for="designation">Designation</label>
+                <input type="text" name="designation" id="designation">
+                <label for="fline">Address Line1</label>
+                <input type="text" name="fline" id="fline">
+                <label for="sline">Address Line2</label>
+                <input type="text" name="sline" id="sline">
+                <label for="city">City</label>
+                <input type="text" name="city" id="city">
+                <label for="state">State</label>
+                <select name="state" id="state">
+                    <option value="gujarat">Gujarat</option>
+                    <option value="Delhi">Delhi </option>
+                </select>
+                <br>
+                <br>
+                <label for="zipcode">Zipcode</label>
+                <input type="text" name="zipcode" id="zipcode">
+                <br>
+                <br>
+                <label for="phone">Phone Number</label>
+                <input type="text" name="phone" id="phone">
+                <label for="gender">Gender</label>
+                <input type="radio" name="gender" id="male" value="male"><label for="male">Male</label>
+                <input type="radio" name="gender" id="female"><label for="female">Female</label>
+                <label for="status">&nbsp;Relationship Status</label>
+                <select name="status" id="status">
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                </select>
+                <label for="birth">BirthDate</label>
+                <input type="date" name="birth" id="birth">
+            </fieldset>
+        </div>
+        <br><br>
+        <div class="education-container">
+            <fieldset>
+                <legend>Education Details</legend>
+                <div class="button-container">
+                    <input type="button" value="+" id="e-plus">
+                    <input type="button" value="-" id="e-minus">
+                </div>
+                <table id="education-table" border="1" cellspacing="0"> 
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Course</th>
+                        <th>Passing Year</th>
+                        <th>University/Board</th>
+                        <th>Result</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <input type="text" name="course1" id="course1">
+                        </td>
+                        <td>
+                            <input type="text" name="passYear1" id="passYear1">
+                        </td>
+                        <td>
+                            <input type="text" name="uni1" id="uni1">
+                        </td>
+                        <td>
+                            <input type="text" name="res1" id="res1">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        <br><br>
+        <div class="work-container">
+             
+            <fieldset>
+                <legend>Work Experience</legend>
+                <div class="button-container">
+                    <input type="button" value="+" id="w-plus">
+                    <input type="button" value="-" id="w-minus">
+                </div>
+                <table id="work-table" border="1" cellspacing="0"> 
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Company Name</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Anual Package</th>
+                        <th>Reason To Leave</th>
+                        <th>Ref Contact No.</th>
+                        <th>Ref. Contact Name</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <input type="text" name="company1" id="company1">
+                        </td>
+                        <td>
+                            <input type="date" name="from1" id="from1">
+                        </td>
+                        <td>
+                            <input type="date" name="to1" id="to1">
+                        </td>
+                         <td>
+                            <input type="text" name="package1" id="package1">
+                        </td>
+                         <td>
+                            <input type="text" name="reason1" id="reason1">
+                        </td>
+                         <td>
+                            <input type="text" name="refContact1" id="refContact1">
+                        </td>
+                         <td>
+                            <input type="text" name="refName1" id="refName1">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        <br><br>
+        <div class="language-container">
+            <fieldset>
+                <legend>Language Known</legend>
+                <table id="language-table" border="1">
+                     <tr>
+                        <th>Sr. No.</th>
+                        <th>Language</th>
+                        <th>Read</th>
+                        <th>Write</th>
+                        <th>Speak</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><label for="lang1">Hindi</label></td>
+                        <td><input type="checkbox" name="read1" id="read1"></td>
+                        <td><input type="checkbox" name="write1" id="write1"></td>
+                        <td><input type="checkbox" name="speak1" id="speak1"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><label for="lang1">English</label></td>
+                        <td><input type="checkbox" name="read2" id="read2"></td>
+                        <td><input type="checkbox" name="write2" id="write2"></td>
+                        <td><input type="checkbox" name="speak2" id="speak2"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><label for="lang1">Gujarati</label></td>
+                        <td><input type="checkbox" name="read3" id="read3"></td>
+                        <td><input type="checkbox" name="write3" id="write3"></td>
+                        <td><input type="checkbox" name="speak3" id="speak3"></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        <br><br>
+<div class="techonology-container">
+            <fieldset>
+                <legend>Techonologies Known</legend>
+                <table id="Techonologies-table" border="1">
+                     <tr>
+                        <th>Sr. No.</th>
+                        <th>Language</th>
+                        <th>Read</th>
+                        <th>Write</th>
+                        <th>Speak</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td><label for="lang1">Hindi</label></td>
+                        <td><input type="checkbox" name="read1" id="read1"></td>
+                        <td><input type="checkbox" name="write1" id="write1"></td>
+                        <td><input type="checkbox" name="speak1" id="speak1"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><label for="lang1">English</label></td>
+                        <td><input type="checkbox" name="read2" id="read2"></td>
+                        <td><input type="checkbox" name="write2" id="write2"></td>
+                        <td><input type="checkbox" name="speak2" id="speak2"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><label for="lang1">Gujarati</label></td>
+                        <td><input type="checkbox" name="read3" id="read3"></td>
+                        <td><input type="checkbox" name="write3" id="write3"></td>
+                        <td><input type="checkbox" name="speak3" id="speak3"></td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+
+        <br><br>
+
+        <div class="reference-container">
+            <fieldset>
+                <legend>Reference Contact</legend>
+                <div class="button-container">
+                    <input type="button" value="+" id="r-plus">
+                    <input type="button" value="-" id="r-minus">
+                </div>
+                <table id="reference-table" border="1" cellspacing="0"> 
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Name</th>
+                        <th>Contact Number</th>
+                        <th>Relation</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <input type="text" name="referenceName1" id="referenceName1">
+                        </td>
+                        <td>
+                            <input type="text" name="referenceContact1" id="referenceContact1">
+                        </td>
+                        <td>
+                            <input type="text" name="relation1" id="relation1">
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        <br><br>
+        <div class="prefered-container">
+            <fieldset>
+                <legend>Preferances</legend>
+                <label for="location">Prefered Location</label>
+                <select name="location" id="location" multiple>
+                    <option value="remote">Remote</option>
+                    <option value="ahmedabad">Ahmedabad</option>
+                    <option value="bhavnagar">Bhavnagar</option>
+                </select>
+                <label for="notice">Notice Period</label>
+                <input type="text" name="notice" id="notice">
+                <label for="ectc">Expacted CTC</label>
+                <input type="text" name="ectc" id="ectc">
+                <label for="cctc">Current CTC</label>
+                <input type="text" name="cctc" id="cctc">
+                <br>
+                <br>
+                <label for="department">Department</label>
+                <select name="department" id="department">
+                    <option value="development">Development</option>
+                    <option value="design">Design</option>
+                    <option value="account">Account</option>
+                </select>
+            </fieldset>
+        </div>
+        <br><br>
+        <div class="submit-button">
+            <input type="submit" value="Submit" style="display: block; margin: 0 auto; "> 
+        </div>
+    </form>
+</body>
+<script>
+    
+</script>
+<script src="index.js"></script>
+
+</html>
