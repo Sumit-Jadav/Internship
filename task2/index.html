@@ -1,13 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Traffic Lights</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Traffic Light</title>
+    <style>
+        * {
+            width: 0;
+            height: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 62.5%;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-content: center;
+        }
+
+        .container {
+            height: 600px;
+            width: 600px;
+            border: 1px solid black;
+        }
+
+        .container>tr>td {
+            background-color: white;
+
+        }
+
+        .traffic {
+            width: 50px;
+            height: 150px;
+            background-color: #fff;
+            margin: 0 auto;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .green {
+            background-color: green;
+
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+    </style>
 </head>
+
 <body>
-   
+    <table class="container">
+        <tr>
+            <td></td>
+            <td class="road" style="background: grey;">
+                <table class="traffic" id="n">
+                    <tr>
+                        <td class="light green" id="n-green"></td>
+                    </tr>
+                    <tr>
+                        <td class="light yellow" id="n-yellow"></td>
+                    </tr>
+                    <tr>
+                        <td class="light red" id="n-red"></td>
+                    </tr>
+                </table>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="background: grey;">
+                <table class="traffic" id="w">
+                    <tr>
+                        <td class="light green" id="w-green"></td>
+                    </tr>
+                    <tr>
+                        <td class="light yellow" id="w-yellow"></td>
+                    </tr>
+                    <tr>
+                        <td class="light red" id="w-red"></td>
+                    </tr>
+                </table>
+            </td>
+            <td></td>
+            <td style="background: grey;">
+                <table class="traffic" id="e">
+                    <tr>
+                        <td class="light green" id="e-green"></td>
+                    </tr>
+                    <tr>
+                        <td class="light yellow" id="e-yellow"></td>
+                    </tr>
+                    <tr>
+                        <td class="light red" id="e-red"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="background: grey;">
+                <table class="traffic" id="w">
+                    <tr>
+                        <td class="light green" id="s-green"></td>
+                    </tr>
+                    <tr>
+                        <td class="light yellow" id="s-yellow"></td>
+                    </tr>
+                    <tr>
+                        <td class="light red" id="s-red"></td>
+                    </tr>
+                </table>
+            </td>
+            <td></td>
+        </tr>
+    </table>
 </body>
-<script src="index.js"></script>
+<script>
+    function resetLights() {
+        let lightsList = document.querySelectorAll(".light");
+        lightsList.forEach(light => {
+            light.classList.remove("red");
+            light.classList.remove("yellow");
+            light.classList.remove("green");
+
+
+        })
+    }
+
+    function setLight(direction, color) {
+        let light = document.querySelector("#" + direction + "-" + color);
+        light.classList.add(color);
+
+    }
+
+    let time = 0;
+    function printTime(){
+        setTimeout(() => {
+
+            console.log(time);
+            time++;
+            printTime();
+        }, 1000);
+    }
+
+
+    function startLights() {
+        resetLights();
+        setLight("n", "green");
+        setLight("e", "red");
+        setLight("w", "red");
+        setLight("s", "red");
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "yellow");
+            setLight("e", "red");
+            setLight("w", "red");
+            setLight("s", "red");    
+        }, 3000);
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "red");
+            setLight("e", "green");
+            setLight("w", "red");
+            setLight("s", "red");
+        } , 4000);
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "red");
+            setLight("e", "yellow");
+            setLight("w", "red");
+            setLight("s", "red");
+        } , 7000);
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "red");
+            setLight("e", "red");
+            setLight("w", "red");
+            setLight("s", "green");
+        } , 8000);
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "red");
+            setLight("e", "red");
+            setLight("w", "red");
+            setLight("s", "yellow");
+        } , 11000);
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "red");
+            setLight("e", "red");
+            setLight("w", "green");
+            setLight("s", "red");
+        } , 12000);
+        setTimeout(() => {
+            resetLights();
+            setLight("n", "red");
+            setLight("e", "red");
+            setLight("w", "yellow");
+            setLight("s", "red");
+        } , 15000);
+        // setTimeout(() => {
+        //     resetLights();
+        //     setLight("n", "green");
+        //     setLight("e", "red");
+        //     setLight("w", "red");
+        //     setLight("s", "red");
+        // } , 16000);
+
+
+    }
+    printTime();
+    startLights();
+    setInterval(startLights , 16000);
+
+</script>
+
 </html>
