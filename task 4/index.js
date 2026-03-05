@@ -1,0 +1,72 @@
+let result = document.getElementById("result");
+let click = document.getElementById("click");
+let dbclick = document.getElementById("dbclick");
+let mouseout = document.getElementById("mouseout");
+let mouseover = document.getElementById("mouseover");
+let mousemove = document.getElementById("mousemove");
+let mouseup = document.getElementById("mouseup");
+let mousedown = document.getElementById("mousedown");
+let wheel = document.getElementById("wheel");
+let context = document.getElementById("context");
+let focus = document.getElementById("focus");
+let blur = document.getElementById("blur");
+let changeEvent = document.getElementById("changeEvent");
+let inputEvent = document.getElementById("inputEvent");
+let keyPress = document.getElementById("keyPressEvent");
+let keyUp = document.getElementById("keyUpEvent");
+let keyDown = document.getElementById("keyDownEvent");
+click.addEventListener("click", () => {
+  result.innerText = `Click event triggered`;
+});
+dbclick.addEventListener("dblclick", () => {
+  result.innerText = `Double Click event Occure`;
+});
+mouseout.addEventListener("mouseout", () => {
+  result.innerText = "mouse is out of cell";
+});
+mouseover.addEventListener("mouseover", () => {
+  result.innerText = `mouse is over the cell`;
+});
+mousemove.addEventListener("mousemove", (e) => {
+  result.innerText = `Mouse pointer at X:${e.clientX} and Y:${e.clientY}`;
+});
+mouseup.addEventListener("mouseup", (e) => {
+  result.innerText = `Mouse button is relased`;
+});
+mousedown.addEventListener("mousedown", () => {
+  result.innerText = `Mouse button is pressed `;
+});
+mousedown.addEventListener(
+  "mouseup",
+  () => (result.innerText = `Mouse button is released`),
+);
+wheel.addEventListener(
+  "wheel",
+  () => (result.innerText = `Mouse wheel scrolled`),
+);
+context.addEventListener("contextmenu", () => {
+  result.innerText = "ContextMenu is opened";
+});
+focus.addEventListener("focus", () => {
+  focus.style.backgroundColor = "green";
+});
+blur.addEventListener("blur", () => {
+  blur.style.backgroundColor = "grey";
+});
+changeEvent.addEventListener("change", (e) => {
+  result.innerText = `Value is changed: ${e.target.value}`;
+});
+inputEvent.addEventListener("input", (e) => {
+  result.innerText = `Input changed:${e.target.value}`;
+});
+keyPress.addEventListener("keypress", (e) => {
+  console.log(e);
+
+  result.innerText = `Key pressed:- ${e.key}`;
+});
+keyUp.addEventListener("keyup", (e) => {
+  result.innerText = `Key is released:- ${e.key}`;
+});
+keyDown.addEventListener("keydown", (e) => {
+  result.innerText = `Key is pressed :- ${e.key}`;
+});

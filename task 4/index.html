@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event and Function Demo</title>
+    <style>
+      html {
+        font-size: 62.5%;
+        width: 100vw;
+        height: 100vh;
+      }
+      body {
+        width: 100%;
+        height: 90%;
+      }
+      table {
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center; margin-top: 2rem; font-size: 3rem">
+      Events and Function Demo
+    </h1>
+    <table border="1">
+      <tr>
+        <td id="click">Click</td>
+        <td id="dbclick">DblClick</td>
+        <td id="mouseover">MouseOver</td>
+        <td id="mouseout">MouseOut</td>
+        <td id="mousemove">MouseMove</td>
+      </tr>
+      <tr>
+        <td id="mouseup">MouseUp</td>
+        <td id="mousedown">MouseDown</td>
+        <td id="wheel">Wheel rotation</td>
+        <td id="context">Context Menu</td>
+        <td>
+          <input type="text" name="name" id="focus" placeholder="focus" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="text" name="surname" id="blur" placeholder="blur" />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="city"
+            placeholder="Demo of change event"
+            id="changeEvent"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="state"
+            id="inputEvent"
+            placeholder="Demo of input event"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name=""
+            id="keyPressEvent"
+            placeholder="Key press event"
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name=""
+            id="keyUpEvent"
+            placeholder="keyup event"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="text"
+            name=""
+            id="keyDownEvent"
+            placeholder="key down event"
+          />
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <p id="result" style="font-size: 2.5rem"></p>
+  </body>
+  <script src="index.js"></script>
+</html>
