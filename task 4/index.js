@@ -15,6 +15,11 @@ let inputEvent = document.getElementById("inputEvent");
 let keyPress = document.getElementById("keyPressEvent");
 let keyUp = document.getElementById("keyUpEvent");
 let keyDown = document.getElementById("keyDownEvent");
+let btn = document.getElementById("btn");
+let after = document.getElementById("after");
+let beforeBtn = document.getElementById("before-btn");
+let appendBtn = document.getElementById("appendBtn");
+let appendChildBtn = document.getElementById("appendChildBtn");
 click.addEventListener("click", () => {
   result.innerText = `Click event triggered`;
 });
@@ -69,4 +74,18 @@ keyUp.addEventListener("keyup", (e) => {
 });
 keyDown.addEventListener("keydown", (e) => {
   result.innerText = `Key is pressed :- ${e.key}`;
+});
+btn.addEventListener("click", () => {
+  result.after("hello");
+});
+beforeBtn.addEventListener("click", () => {
+  result.before("This is before text");
+});
+appendBtn.addEventListener("click", () => {
+  result.append("This is appended text!!!!");
+});
+appendChildBtn.addEventListener("click", () => {
+  let spanTag = document.createElement("span");
+  spanTag.innerText = "This is child";
+  result.appendChild(spanTag);
 });
