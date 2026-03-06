@@ -20,6 +20,10 @@ let after = document.getElementById("after");
 let beforeBtn = document.getElementById("before-btn");
 let appendBtn = document.getElementById("appendBtn");
 let appendChildBtn = document.getElementById("appendChildBtn");
+let errorEle = document.getElementById("errorEvent");
+let copyEle = document.getElementById("copyEle");
+let cutEle = document.getElementById("cutEle");
+let pasteEle = document.getElementById("pasteEle");
 click.addEventListener("click", () => {
   result.innerText = `Click event triggered`;
 });
@@ -88,4 +92,26 @@ appendChildBtn.addEventListener("click", () => {
   let spanTag = document.createElement("span");
   spanTag.innerText = "This is child";
   result.appendChild(spanTag);
+});
+errorEle.addEventListener("error", (e) => {
+  // result.innerText = `Error occure while loading the image`;
+  alert("Error occure while loading the image");
+});
+
+window.addEventListener("resize", (e) => {
+  alert("You have changed the size of window");
+});
+
+copyEle.addEventListener("copy", (e) => {
+  let selectedTxt = document.getSelection().toString();
+  // console.log(e);
+  alert(`User copied: ${selectedTxt}`);
+});
+cutEle.addEventListener("cut", (e) => {
+  let selectedTxt = document.getSelection().toString();
+  result.innerText = `User cut:- ${selectedTxt}`;
+});
+pasteEle.addEventListener("paste", (e) => {
+  let selectedTxt = e.clipboardData.getData("text/plain");
+  result.innerText = `You have pasted:- ${selectedTxt}`;
 });
