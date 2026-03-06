@@ -1,5 +1,7 @@
 create database if not exists job_application;
 
+use job_application;
+
 create table if not exists job_applicants(
 id bigint unsigned auto_increment,
 first_name varchar(100) not null,
