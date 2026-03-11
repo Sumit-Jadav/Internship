@@ -10,13 +10,18 @@
     <div class="menu-container">
       <div class="element-container">
         <select name="orderField" id="orderField">
-          <option value="fname">Sort By Name</option>
-          <option value="id">Sort By Id</option>
-          
+          <option value="select">Select Sorting Field</option>
+          <option value="fname" <%= orderField === "fname" ? "selected" : "" %>>Sort By Name</option>
+          <option value="id" <%= orderField === "id" ? "selected" : "" %>>Sort By Id</option>
+          <option value="date_of_birth" <%= orderField === "date_of_birth" ? "selected" : "" %>>Sort By DOB</option>          
+          <option value="city" <%= orderField === "city" ? "selected" : "" %>>Sort By City</option>          
+          <option value="email_address" <%= orderField === "email_address" ? "selected" : "" %>>Sort By Email</option>          
+          <option value="phone_number" <%= orderField === "phone_number" ? "selected" : "" %>>Sort By Phone</option>          
         </select>
         <select name="order" id="order">
-          <option value="asc">ASC</option>
-          <option value="desc">DESC</option>
+          <option value="select">Select Sorting Order</option>
+          <option value="asc" <%= order === "asc" ? "selected" : "" %>>ASC</option>
+          <option value="desc" <%= order === "order" ? "selected" : "" %>>DESC</option>
         </select>
       </div>
     </div>
@@ -50,14 +55,32 @@
     </div>
     <div class="pagination-container">
       <%if(!(current_page == 1)){%>
-        <a href="..?page=<%= 1%>"><<</a>
-        <a href="..?page=<%= current_page - 1%>"><</a>
+        <a href="..?page=<%= 1%>&orderField=<%=orderField%>&order=<%=order%>"><<</a>
+        <a href="..?page=<%= current_page - 1%>&orderField=<%=orderField%>&order=<%=order%>"><</a>
       <%}%>
-      <a href="..?page=<%=1%>"><%=current_page%></a>
+      <a href="..?page=<%=current_page%>&orderField=<%=orderField%>&order=<%=order%>"><%=current_page%></a>
       <%if(!(current_page == total_pages)){%>
-      <a href="..?page=<%= parseInt(current_page) + 1%>">></a>
-      <a href="..?page=<%=total_pages%>">>></a>
+      <a href="..?page=<%= parseInt(current_page) + 1%>&orderField=<%=orderField%>&order=<%=order%>">></a>
+      <a href="..?page=<%=total_pages%>&orderField=<%=orderField%>&order=<%=order%>">>></a>
       <%}%>
+    </div>
+    <div class="pagination-container pattern">
+      <%if(parseInt(current_page) != 1 ){%>
+      <a href="..?page=<%=1%>&orderField=<%=orderField%>&order=<%=order%>">1</a>
+      <%}%>
+      <%if(parseInt(current_page) > 2){%>
+      <a href="..?page=<%=2%>&orderField=<%=orderField%>&order=<%=order%>"><%=2%></a>
+      <%}%>
+      <!-- <%if(parseInt(current_page) > 1){%>
+      <a href="..?page=<%=current_page- 1%>&orderField=<%=orderField%>&order=<%=order%>"><%=parseInt(current_page) - 1%></a>
+      <%}%> -->
+      <%if(parseInt(current_page) > 1){%>
+      ...
+      <a href="..?page=<%=current_page - 1%>&orderField=<%=orderField%>&order=<%=order%>"><%=parseInt(current_page) - 1%></a>
+      <%}%>
+      <a href="..?page=<%=current_page%>&orderField=<%=orderField%>&order=<%=order%>"><%=current_page%></a>
+      <a href="..?page=<%=current_page +1%>&orderField=<%=orderField%>&order=<%=order%>"><%= parseInt(current_page)+1%></a>
+      <a href="..?page=<%=total_pages%>&orderField=<%=orderField%>&order=<%=order%>"><%=total_pages%></a>
     </div>
   </body>
   <%- include("footer")%>
