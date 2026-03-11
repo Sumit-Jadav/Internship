@@ -1,13 +1,15 @@
 <script>
-  let orderField = document.getElementById("orderField");
-  let url = "";
-  orderField.addEventListener("change", (e) => {
-    url += `${location.host}/?page=1&orderField=${e.target.value}`;
-    window.location.assign(url);
-  });
-  let order = document.getElementById("order");
-  order.addEventListener("change", (e) => {
-    url += `&order=${e.target.value}`;
-    window.location.assign(url);
-  });
+  const orderField = document.getElementById("orderField");
+  const order = document.getElementById("order");
+
+  // Helper function to reload page with query
+  function reloadPage() {
+    const fieldVal = orderField.value === "select" ? "id" : orderField.value;
+    const orderVal = order.value === "select" ? "asc" : order.value;
+    const page = <%= current_page %>;
+    window.location.href = `/?page=${1}&orderField=${fieldVal}&order=${orderVal}`;
+  }
+
+  orderField.addEventListener("change", reloadPage);
+  order.addEventListener("change", reloadPage);
 </script>
