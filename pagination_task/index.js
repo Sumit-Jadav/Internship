@@ -24,31 +24,44 @@ app.set("view engine", "ejs");
 //   { id: 11, name: "Rashamika" },
 // ];
 // const data = await getUsersName();
-
+const acceptVal = [
+  "id",
+  "date_of_birth",
+  "fname",
+  "city",
+  "phone_number",
+  "email_address",
+];
+const accept_orders = ["asc", "desc"];
 const db = await connectDb();
 // console.log(db);
 
 app.get("/", async (req, res) => {
   try {
     const [total] = await db.execute(
-      "SELECT count(*) as total_records from students",
+      "SELECT count(*) as total_records from students_demo",
     );
 
     let record_page = parseInt(process.env.RECORDS_PER_PAGE);
-    let current_page = req.query.page || 1;
+    let current_page = parseInt(req.query.page) || 1;
     let total_records = total[0].total_records;
-    let total_pages = Math.floor(total_records / parseInt(record_page));
-    let offsetVal = current_page * record_page - 100;
-    const limitVal = 100;
+    let total_pages = Math.ceil(total_records / parseInt(record_page));
+    let offsetVal = current_page * record_page - record_page;
+    const limitVal = record_page;
     const orderField = req.query.orderField || "id";
-    const order = req.query.order || "desc";
+    const order = req.query.order || "asc";
     if (current_page == 1) {
       offsetVal = 0;
     }
+    if (current_page > total_pages && current_page < 1) {
+      throw new Error("Invalid page parameter in query string");
+    }
     console.log(`OrderField:-${orderField} and order:-${order}`);
-
+    if (!acceptVal.includes(orderField)) {
+      throw new Error("Field not defined");
+    }
     const [data, fields] = await db.execute(
-      `SELECT * from students order by ${orderField} limit ${offsetVal},${limitVal}`,
+      `SELECT * from students_demo order by ${orderField} ${order} limit ${offsetVal},${limitVal}`,
     );
     // console.log(JSON.stringify(total_records));
     console.log(`Current Page ${current_page}`);
@@ -64,6 +77,8 @@ app.get("/", async (req, res) => {
       total_records,
       current_page,
       total_pages,
+      orderField,
+      order,
     });
   } catch (e) {
     console.log(`Error while fetching  :- ${e.message}`);
