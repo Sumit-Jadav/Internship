@@ -1,0 +1,13 @@
+<script>
+  let orderField = document.getElementById("orderField");
+  let url = "";
+  orderField.addEventListener("change", (e) => {
+    url += `${location.host}/?page=1&orderField=${e.target.value}`;
+    window.location.assign(url);
+  });
+  let order = document.getElementById("order");
+  order.addEventListener("change", (e) => {
+    url += `&order=${e.target.value}`;
+    window.location.assign(url);
+  });
+</script>

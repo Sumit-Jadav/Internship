@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagination Demo</title>
+    <%- include("header") %>
+  </head>
+  <body>
+    <div class="menu-container">
+      <div class="element-container">
+        <select name="orderField" id="orderField">
+          <option value="fname">Sort By Name</option>
+          <option value="id">Sort By Id</option>
+          
+        </select>
+        <select name="order" id="order">
+          <option value="asc">ASC</option>
+          <option value="desc">DESC</option>
+        </select>
+      </div>
+    </div>
+    <div class="data-container">
+      <table border="1" cellspacing="0">
+        <tr >
+          <th>Sr. No.</th>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Address</th>
+          <th>City</th>
+          <th>Gender</th>
+          <th>D.O.B</th>
+        </tr>
+        <% data.forEach((ele,index) =>  { %>
+            <tr>
+                <td><%=index+1%></td>
+                <td><%=ele.id%></td>
+                <td><%=ele.fname + " " + ele.lname%></td>
+                <td><%=ele.email_address %></td>
+                <td><%=ele.phone_number %></td>
+                <td><%=ele.address %></td>
+                <td><%=ele.city %></td>
+                <td><%=ele.gender %></td>
+                <td><%=new Date(ele.date_of_birth).toISOString().split("T")[0] %></td>
+            </tr>
+        <% }) %>
+      </table>
+    </div>
+    <div class="pagination-container">
+      <%if(!(current_page == 1)){%>
+        <a href="..?page=<%= 1%>"><<</a>
+        <a href="..?page=<%= current_page - 1%>"><</a>
+      <%}%>
+      <a href="..?page=<%=1%>"><%=current_page%></a>
+      <%if(!(current_page == total_pages)){%>
+      <a href="..?page=<%= parseInt(current_page) + 1%>">></a>
+      <a href="..?page=<%=total_pages%>">>></a>
+      <%}%>
+    </div>
+  </body>
+  <%- include("footer")%>
+</html>
