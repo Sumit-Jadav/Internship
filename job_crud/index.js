@@ -9,45 +9,9 @@ const PORT = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Connection with database
+
 let db = null;
-
-// Dummy data
-const data = [
-  {
-    id: 1,
-    name: "Sumit Jadav",
-    phone: "1234567890",
-    email: "demo@example.com",
-    designation: "Software Engineer",
-    address: "101 , Demo , Demo",
-    city: "Bhavnagar",
-    state: "Gujarat",
-    pincode: "364006",
-    gender: "male",
-    status: "single",
-    dob: "2000-01-01",
-  },
-];
-
-const lan = [
-  {
-    id: 1,
-    name: "Englidh",
-    canRead: 1,
-    canWrite: 1,
-    canSpeak: 1,
-  },
-];
-
-const skills = [
-  {
-    id: 1,
-    name: "JavaScript",
-    proficiency: "Intermediate",
-  },
-];
-
+// Getting database reference
 async function startServer() {
   try {
     db = await connectDB();
@@ -55,6 +19,14 @@ async function startServer() {
     console.log(`Error Occure: ${e.message}`);
   }
 }
+
+function groupFields(body, prefix) {
+  const groupedData = [];
+  for (const key in body) {
+  }
+  return groupedData;
+}
+
 startServer();
 app.get("/", (req, res) => {
   res.render("index", { data });
@@ -65,15 +37,62 @@ app.get("/insert", (req, res) => {
 });
 
 app.get("/lan", (req, res) => {
+  const id = req.query.id;
+  try {
+    const [lanData] = db.execute(
+      `SELECT * FROM languages where applicant_id = ${id}`,
+    );
+  } catch (e) {
+    console.log(`Error while fetching language:${e.message}`);
+  }
+
   res.status(200).render("language", { lan });
 });
 
 app.get("/skill", (req, res) => res.render("skills", { skills }));
 
-app.post("/insertdata", (req, res) => {
-  console.log(req.body["location[]"]);
-
+app.post("/insertdata", async (req, res) => {
   const data = req.body;
+  const {
+    fname,
+    lname,
+    designation,
+    fline,
+    sline,
+    city,
+    state,
+    zipcode,
+    phone,
+    gender,
+    status,
+    birth,
+  } = req.body;
+  console.log(data);
+
+  const email = "demoemail2@example.com";
+  try {
+    // Insering Personal Data
+    const [response] = await db.execute(
+      "INSERT INTO `job_applicants`(`first_name`, `last_name`, `email_address`, `phone_number`, `gender`, `date_of_birth`,`applied_designation`,`relationship_status`) VALUES (?,?,?,?,?,?,?,?)",
+      [fname, lname, email, phone, gender, birth, designation, status],
+    );
+    if (response.affectedRows > 0) {
+      console.log(`Data inserted success`);
+    }
+    // Getting last id
+    const lastid = response.insertId;
+    console.log(JSON.stringify(response));
+    console.log(lastid);
+    // Inserting Address Data
+    const [addressData] = await db.execute(
+      `insert into applicants_address(applicant_id,first_line,second_line,applicant_city,applicant_state,applicant_pincode) values (${lastid},'${fline}','${sline}','${city}','${state}',${zipcode})`,
+    );
+
+    //inserting educational data
+  } catch (e) {
+    console.error("Error occurred while inserting data:", e.message);
+  }
+
   console.log("URL hit");
   console.log(data);
 });
