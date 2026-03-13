@@ -1,0 +1,122 @@
+CREATE DATABASE IF NOT EXISTS job_application_v2;
+USE job_application_v2;
+
+
+CREATE TABLE IF NOT EXISTS job_applicants (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email_address VARCHAR(200) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    gender VARCHAR(20) NOT NULL, 
+    date_of_birth DATE NOT NULL,
+    applied_designation VARCHAR(100) NOT NULL, 
+    relationship_status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_applicant_id PRIMARY KEY(id),
+    CONSTRAINT uq_applicants_email UNIQUE(email_address)
+);
+
+
+CREATE TABLE IF NOT EXISTS applicants_address (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    first_line VARCHAR(200) NOT NULL,
+    second_line VARCHAR(200),
+    applicant_city VARCHAR(50) NOT NULL,
+    applicant_state VARCHAR(50) NOT NULL,
+    applicant_pincode VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_address_id PRIMARY KEY(id),
+    CONSTRAINT fk_address_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS education_details (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    course VARCHAR(100) NOT NULL,
+    passing_year INT NOT NULL,
+    university VARCHAR(500) NOT NULL,
+    result DECIMAL(5,2) NOT NULL, 
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_education_id PRIMARY KEY(id),
+    CONSTRAINT fk_educations_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS work_experiences (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    company_name VARCHAR(200) NOT NULL,
+    designation VARCHAR(100) NOT NULL, 
+    from_date DATE NOT NULL,
+    to_date DATE, 
+    annual_package INT UNSIGNED NOT NULL,
+    reason_to_leave TEXT,
+    ref_contact_name VARCHAR(100),
+    ref_contact_number VARCHAR(20),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_experience_id PRIMARY KEY(id),
+    CONSTRAINT fk_experiences_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS job_references (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    reference_name VARCHAR(100) NOT NULL,
+    reference_contact VARCHAR(20) NOT NULL,
+    relation VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_reference_id PRIMARY KEY(id),
+    CONSTRAINT fk_references_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
+
+
+CREATE TABLE IF NOT EXISTS technologies_known (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    technology_name VARCHAR(100) NOT NULL,
+    is_beginner TINYINT(1) NOT NULL DEFAULT 0,
+    is_advance TINYINT(1) NOT NULL DEFAULT 0,
+    is_expert TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_technology_id PRIMARY KEY(id),
+    CONSTRAINT fk_technologies_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS language_known (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    language_name VARCHAR(100) NOT NULL,
+    can_speak TINYINT(1) NOT NULL DEFAULT 0,
+    can_write TINYINT(1) NOT NULL DEFAULT 0,
+    can_read TINYINT(1) NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_language_id PRIMARY KEY(id),
+    CONSTRAINT fk_languages_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS applicant_preferences (
+    id BIGINT UNSIGNED AUTO_INCREMENT,
+    applicant_id BIGINT UNSIGNED NOT NULL,
+    prefer_location VARCHAR(100) NOT NULL,
+    notice_period INT UNSIGNED NOT NULL,
+    expected_ctc INT UNSIGNED NOT NULL,
+    current_ctc INT UNSIGNED NOT NULL,
+    department VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT pk_preference_id PRIMARY KEY(id),
+    CONSTRAINT fk_preferences_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
