@@ -17,7 +17,7 @@
     <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
 
     <h1 style="text-align: center">Job Application</h1>
-    <form id="form" method="post">
+    <form id="form" method="post" action="/insertdata">
       <div class="basic-container">
         <fieldset>
           <legend>Basic Details</legend>
@@ -601,6 +601,8 @@
 
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
+      const preferenceLocation = formData.getAll("location[]");
+      data["location[]"] = preferenceLocation;
       const res = await fetch("http://localhost:5000/insertdata", {
         method: "POST",
         headers: {
