@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Skills</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <table class="table table-responsive">
+      <tr>
+        <th>ID</th>
+        <th>Language</th>
+        <th>Can Read</th>
+        <th>Can Write</th>
+        <th>Can Speak</th>
+      </tr>
+      <%lan.forEach(item => {%>
+        <tr>
+            <td><%= item.id%></td>
+            <td><%= item.name%></td>
+            <td><%= item.canRead%></td>
+            <td><%= item.canWrite%></td>
+            <td><%= item.canSpeak%></td>
+        </tr>
+      <%})%>  
+    </table>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</html>

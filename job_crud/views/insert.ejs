@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Application</title>
+    <style>
+      input[type="button"] {
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-left: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+
+    <h1 style="text-align: center">Job Application</h1>
+    <form id="form" method="post">
+      <div class="basic-container">
+        <fieldset>
+          <legend>Basic Details</legend>
+          <label for="fname">First Name</label>
+          <input type="text" name="fname" id="fname" />
+          <label for="lname">Last Name</label>
+          <input type="text" name="lname" id="lname" />
+          <br />
+          <br />
+          <label for="designation">Designation</label>
+          <input type="text" name="designation" id="designation" />
+          <label for="fline">Address Line1</label>
+          <input type="text" name="fline" id="fline" />
+          <label for="sline">Address Line2</label>
+          <input type="text" name="sline" id="sline" />
+          <label for="city">City</label>
+          <input type="text" name="city" id="city" />
+          <label for="state">State</label>
+          <select name="state" id="state">
+            <option value="gujarat">Gujarat</option>
+            <option value="Delhi">Delhi</option>
+          </select>
+          <br />
+          <br />
+          <label for="zipcode">Zipcode</label>
+          <input type="text" name="zipcode" id="zipcode" />
+          <br />
+          <br />
+          <label for="phone">Phone Number</label>
+          <input type="text" name="phone" id="phone" />
+          <br /><br />
+          <div class="radio-group">
+            <label for="gender">Gender</label>
+            <input type="radio" name="gender" id="male" value="male" /><label
+              for="male"
+              >Male</label
+            >
+            <input type="radio" name="gender" id="female" /><label for="female"
+              >Female</label
+            >
+          </div>
+          <br />
+          <label for="status">&nbsp;Relationship Status</label>
+          <select name="status" id="status">
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+          </select>
+          <label for="birth">BirthDate</label>
+          <input type="date" name="birth" id="birth" />
+        </fieldset>
+      </div>
+      <br /><br />
+      <div class="education-container">
+        <fieldset>
+          <legend>Education Details</legend>
+          <div class="button-container">
+            <input type="button" value="+" id="e-plus" />
+            <input type="button" value="-" id="e-minus" />
+          </div>
+          <table id="education-table" border="1" cellspacing="0">
+            <tr>
+              <th>Sr. No.</th>
+              <th>Course</th>
+              <th>Passing Year</th>
+              <th>University/Board</th>
+              <th>Result</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>
+                <input type="text" class="course" name="course1" id="course1" />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="passyear"
+                  name="passYear1"
+                  id="passYear1"
+                />
+              </td>
+              <td>
+                <input type="text" name="uni1" class="univercity" id="uni1" />
+              </td>
+              <td>
+                <input type="text" name="res1" class="result" id="res1" />
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </div>
+      <br /><br />
+      <div class="work-container">
+        <fieldset>
+          <legend>Work Experience</legend>
+          <div class="button-container">
+            <input type="button" value="+" id="w-plus" />
+            <input type="button" value="-" id="w-minus" />
+          </div>
+          <table id="work-table" border="1" cellspacing="0">
+            <tr>
+              <th>Sr. No.</th>
+              <th>Company Name</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Anual Package</th>
+              <th>Reason To Leave</th>
+              <th>Ref Contact No.</th>
+              <th>Ref. Contact Name</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>
+                <input type="text" name="company1" id="company1" />
+              </td>
+              <td>
+                <input type="date" name="from1" id="from1" />
+              </td>
+              <td>
+                <input type="date" name="to1" id="to1" />
+              </td>
+              <td>
+                <input type="text" name="package1" id="package1" />
+              </td>
+              <td>
+                <input type="text" name="reason1" id="reason1" />
+              </td>
+              <td>
+                <input type="text" name="refContact1" id="refContact1" />
+              </td>
+              <td>
+                <input type="text" name="refName1" id="refName1" />
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </div>
+      <br /><br />
+      <div class="language-container">
+        <fieldset>
+          <legend>Language Known</legend>
+          <table id="language-table" border="1">
+            <tr>
+              <th>Sr. No.</th>
+              <th>Language</th>
+              <th>Read</th>
+              <th>Write</th>
+              <th>Speak</th>
+            </tr>
+          </table>
+          <p style="color: red" id="lanErr"></p>
+        </fieldset>
+      </div>
+      <br /><br />
+      <div class="techonology-container">
+        <fieldset>
+          <legend>Techonologies Known</legend>
+          <table id="techonologies-table" border="1">
+            <tr>
+              <th>Sr. No.</th>
+              <th>Techonology</th>
+              <th>Beginner</th>
+              <th>Intermediate</th>
+              <th>Expert</th>
+            </tr>
+          </table>
+          <p style="color: red" id="techErr"></p>
+        </fieldset>
+      </div>
+
+      <br /><br />
+
+      <div class="reference-container">
+        <fieldset>
+          <legend>Reference Contact</legend>
+          <div class="button-container">
+            <input type="button" value="+" id="r-plus" />
+            <input type="button" value="-" id="r-minus" />
+          </div>
+          <table id="reference-table" border="1" cellspacing="0">
+            <tr>
+              <th>Sr. No.</th>
+              <th>Name</th>
+              <th>Contact Number</th>
+              <th>Relation</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>
+                <input type="text" name="referenceName1" id="referenceName1" />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  name="referenceContact1"
+                  id="referenceContact1"
+                />
+              </td>
+              <td>
+                <input type="text" name="relation1" id="relation1" />
+              </td>
+            </tr>
+          </table>
+        </fieldset>
+      </div>
+      <br /><br />
+      <div class="prefered-container">
+        <fieldset>
+          <legend>Preferances</legend>
+          <label for="location">Prefered Location</label>
+          <select name="location[]" id="location" multiple>
+            <option value="remote">Remote</option>
+            <option value="ahmedabad">Ahmedabad</option>
+            <option value="bhavnagar">Bhavnagar</option>
+          </select>
+          <label for="notice">Notice Period</label>
+          <input type="text" name="notice" id="notice" />
+          <label for="ectc">Expacted CTC</label>
+          <input type="text" name="ectc" id="ectc" />
+          <label for="cctc">Current CTC</label>
+          <input type="text" name="cctc" id="cctc" />
+          <br />
+          <br />
+          <label for="department">Department</label>
+          <select name="department" id="department">
+            <option value="development">Development</option>
+            <option value="design">Design</option>
+            <option value="account">Account</option>
+          </select>
+        </fieldset>
+      </div>
+      <br /><br />
+      <div class="submit-button">
+        <input
+          type="submit"
+          value="Submit"
+          id="submit"
+          style="display: block; margin: 0 auto"
+        />
+      </div>
+      <input />
+    </form>
+  </body>
+  <script>
+    const validate = new window.JustValidate("#form");
+
+    validate.addField("#fname", [
+      { rule: "required", errorMessage: "First Name is required" },
+      {
+        validator: (value) => /^[A-Za-z]+$/.test(value),
+        errorMessage: "Only alphabets allowed",
+      },
+    ]);
+
+    validate.addField("#lname", [
+      { rule: "required", errorMessage: "Last Name is required" },
+      {
+        validator: (value) => /^[A-Za-z]+$/.test(value),
+        errorMessage: "Only alphabets allowed",
+      },
+    ]);
+
+    validate.addField("#designation", [
+      { rule: "required", errorMessage: "Designation is required" },
+    ]);
+
+    validate.addField("#fline", [
+      { rule: "required", errorMessage: "Address Line 1 required" },
+    ]);
+
+    validate.addField("#sline", [
+      { rule: "required", errorMessage: "Address Line 2 required" },
+    ]);
+
+    validate.addField("#city", [
+      { rule: "required", errorMessage: "City required" },
+    ]);
+
+    validate.addField("#state", [
+      { rule: "required", errorMessage: "State required" },
+    ]);
+
+    validate.addField("#zipcode", [
+      { rule: "required", errorMessage: "Pincode required" },
+      {
+        validator: (value) => /^[0-9]{6}$/.test(value),
+        errorMessage: "Pincode must be 6 digits",
+      },
+    ]);
+
+    validate.addField("#phone", [
+      { rule: "required", errorMessage: "Phone number required" },
+      {
+        validator: (value) => /^[0-9]{10}$/.test(value),
+        errorMessage: "Phone must be 10 digits",
+      },
+    ]);
+
+    validate.addRequiredGroup(".radio-group", "Please select gender");
+
+    validate.addField("#status", [
+      { rule: "required", errorMessage: "Relationship status required" },
+    ]);
+
+    validate.addField("#birth", [
+      { rule: "required", errorMessage: "Birthdate required" },
+      {
+        validator: (value) => new Date(value) <= new Date(),
+        errorMessage: "Birthdate cannot be future date",
+      },
+    ]);
+
+    let educationTable = document.getElementById("education-table");
+    let plusBtn = document.getElementById("e-plus");
+    let minusBtn = document.getElementById("e-minus");
+    let index = 2;
+
+    validate.addField("#course1", [{ rule: "required" }]);
+    validate.addField("#passYear1", [
+      { rule: "required" },
+      { rule: "integer" },
+      { rule: "minLength", value: 4 },
+      { rule: "maxLength", value: 4 },
+    ]);
+    validate.addField("#uni1", [{ rule: "required" }]);
+    validate.addField("#res1", [{ rule: "required" }]);
+
+    plusBtn.addEventListener("click", () => {
+      let newRow = educationTable.insertRow();
+      newRow.insertCell(0).innerHTML = `${index}`;
+      newRow.insertCell(1).innerHTML =
+        `<input type="text" id="course${index}">`;
+      newRow.insertCell(2).innerHTML =
+        `<input type="text" id="passYear${index}">`;
+      newRow.insertCell(3).innerHTML = `<input type="text" id="uni${index}">`;
+      newRow.insertCell(4).innerHTML = `<input type="text" id="res${index}">`;
+
+      validate.addField(`#course${index}`, [{ rule: "required" }]);
+      validate.addField(`#passYear${index}`, [
+        { rule: "required" },
+        { rule: "integer" },
+        { rule: "minLength", value: 4 },
+        { rule: "maxLength", value: 4 },
+      ]);
+      validate.addField(`#uni${index}`, [{ rule: "required" }]);
+      validate.addField(`#res${index}`, [{ rule: "required" }]);
+
+      index++;
+    });
+
+    minusBtn.addEventListener("click", () => {
+      if (index > 2 && confirm("Delete last education entry?")) {
+        educationTable.deleteRow(index - 1);
+        index--;
+      }
+    });
+
+    let workTable = document.getElementById("work-table");
+    let wplusBtn = document.getElementById("w-plus");
+    let wminusBtn = document.getElementById("w-minus");
+    let windex = 2;
+
+    validate.addField("#company1", [{ rule: "required" }]);
+    validate.addField("#from1", [{ rule: "required" }]);
+    validate.addField("#to1", [{ rule: "required" }]);
+    validate.addField("#package1", [{ rule: "required" }, { rule: "number" }]);
+    validate.addField("#reason1", [{ rule: "required" }]);
+    validate.addField("#refContact1", [
+      {
+        validator: (value) => /^[0-9]{10}$/.test(value),
+        errorMessage: "Must be 10 digits",
+      },
+    ]);
+    validate.addField("#refName1", [{ rule: "required" }]);
+
+    wplusBtn.addEventListener("click", () => {
+      let newRow = workTable.insertRow();
+      newRow.insertCell(0).innerHTML = `${windex}`;
+      newRow.insertCell(1).innerHTML =
+        `<input type="text" id="company${windex}">`;
+      newRow.insertCell(2).innerHTML = `<input type="date" id="from${windex}">`;
+      newRow.insertCell(3).innerHTML = `<input type="date" id="to${windex}">`;
+      newRow.insertCell(4).innerHTML =
+        `<input type="text" id="package${windex}">`;
+      newRow.insertCell(5).innerHTML =
+        `<input type="text" id="reason${windex}">`;
+      newRow.insertCell(6).innerHTML =
+        `<input type="text" id="refContact${windex}">`;
+      newRow.insertCell(7).innerHTML =
+        `<input type="text" id="refName${windex}">`;
+
+      validate.addField(`#company${windex}`, [{ rule: "required" }]);
+      validate.addField(`#from${windex}`, [{ rule: "required" }]);
+      validate.addField(`#to${windex}`, [{ rule: "required" }]);
+      validate.addField(`#package${windex}`, [
+        { rule: "required" },
+        { rule: "number" },
+      ]);
+      validate.addField(`#reason${windex}`, [{ rule: "required" }]);
+      validate.addField(`#refContact${windex}`, [
+        {
+          validator: (value) => /^[0-9]{10}$/.test(value),
+          errorMessage: "Must be 10 digits",
+        },
+      ]);
+      validate.addField(`#refName${windex}`, [{ rule: "required" }]);
+
+      windex++;
+    });
+
+    wminusBtn.addEventListener("click", () => {
+      if (windex > 2 && confirm("Delete last work entry?")) {
+        workTable.deleteRow(windex - 1);
+        windex--;
+      }
+    });
+
+    let referenceTable = document.getElementById("reference-table");
+    let rplusBtn = document.getElementById("r-plus");
+    let rminusBtn = document.getElementById("r-minus");
+    let rindex = 2;
+
+    validate.addField("#referenceName1", [{ rule: "required" }]);
+    validate.addField("#referenceContact1", [
+      {
+        validator: (value) => /^[0-9]{10}$/.test(value),
+        errorMessage: "Must be 10 digits",
+      },
+    ]);
+    validate.addField("#relation1", [{ rule: "required" }]);
+
+    rplusBtn.addEventListener("click", () => {
+      let newRow = referenceTable.insertRow();
+      newRow.insertCell(0).innerHTML = `${rindex}`;
+      newRow.insertCell(1).innerHTML =
+        `<input type="text" id="referenceName${rindex}">`;
+      newRow.insertCell(2).innerHTML =
+        `<input type="text" id="referenceContact${rindex}">`;
+      newRow.insertCell(3).innerHTML =
+        `<input type="text" id="relation${rindex}">`;
+
+      validate.addField(`#referenceName${rindex}`, [
+        { rule: "required", errorMessage: "Reference name is required" },
+      ]);
+      validate.addField(`#referenceContact${rindex}`, [
+        {
+          rule: "required",
+          errorMessage: "Reference Phone number is required",
+        },
+        {
+          validator: (value) => /^[0-9]{10}$/.test(value),
+          errorMessage: "Must be 10 digits",
+        },
+      ]);
+      validate.addField(`#relation${rindex}`, [
+        { rule: "required", errorMessage: "Relation filed is required" },
+      ]);
+
+      rindex++;
+    });
+
+    rminusBtn.addEventListener("click", () => {
+      if (rindex > 2 && confirm("Delete last reference?")) {
+        referenceTable.deleteRow(rindex - 1);
+        rindex--;
+      }
+    });
+
+    validate.addField("#notice", [
+      { rule: "required", errorMessage: "Notice period is required" },
+      { rule: "integer", errorMessage: "Notice period should be numaric" },
+    ]);
+
+    validate.addField("#ectc", [
+      { rule: "required", errorMessage: "Expected CTC is required" },
+      { rule: "number", errorMessage: "CTC should be number only" },
+    ]);
+
+    validate.addField("#cctc", [
+      { rule: "required", errorMessage: "Current CTC is required" },
+      { rule: "number", errorMessage: "CTC should be number only" },
+    ]);
+
+    validate.addField("#location", [
+      {
+        validator: () =>
+          document.querySelectorAll("#location option:checked").length > 0,
+        errorMessage: "Select at least one location",
+      },
+    ]);
+
+    validate.addField("#department", [
+      { rule: "required", errorMessage: "Department is required" },
+    ]);
+
+    let language = ["Hindi", "Gujarati", "English"];
+    let langCheckedArr = {};
+    let languageTable = document.getElementById("language-table");
+    language.forEach((ele, index) => {
+      let row = languageTable.insertRow();
+      row.setAttribute("id", `lanRow${index + 1}`);
+      langCheckedArr[`lanCheckBox${index + 1}`] = false;
+      row.insertCell(0).innerHTML = `${index + 1}`;
+      row.insertCell(1).innerHTML =
+        `<input type="checkbox" name="isKnown${index + 1}" onChange = "handleLanguage(this,${index + 1})">${ele}`;
+      row.insertCell(2).innerHTML =
+        `<input type="checkbox" name="read${index + 1}" value="read" id="read${index + 1}" disabled></input>`;
+      row.insertCell(3).innerHTML =
+        `<input type="checkbox" name="write${index + 1}" value="write" id="write${index + 1}" disabled></input>`;
+      row.insertCell(4).innerHTML =
+        `<input type="checkbox" name="speak${index + 1}" value="speak" id="speak${index + 1}" disabled></input>`;
+    });
+
+    let techonologies = ["JAVA", "PYTHON", "PHP", ".NET"];
+
+    let techonologiesTable = document.getElementById("techonologies-table");
+    let techonologiesVarArr = {};
+    techonologies.forEach((ele, index) => {
+      let row = techonologiesTable.insertRow();
+      techonologiesVarArr[`checkedBox${index + 1}`] = false;
+      row.setAttribute("id", `row${index + 1}`);
+      row.insertCell(0).innerHTML = `${index + 1}`;
+      row.insertCell(1).innerHTML =
+        `<input type="checkbox" name="isChecked${index + 1}" onChange="handleCheck(this , ${index + 1})">${ele}`;
+      row.insertCell(2).innerHTML =
+        `<input  type="radio" name="radio${index + 1}" value="beginner" id="beginner${index + 1}" disabled></input>`;
+      row.insertCell(3).innerHTML =
+        `<input type="radio" name="radio${index + 1}" value="intermediate" id="intermediate${index + 1}" disabled></input>`;
+      row.insertCell(4).innerHTML =
+        `<input type="radio" name="radio${index + 1}" value="expert" id="expert${index + 1}" disabled></input>`;
+    });
+
+    function handleCheck(ele, index) {
+      if (ele.checked) {
+        let row = document.getElementById(`row${index}`);
+        document.getElementById(`beginner${index}`).disabled = false;
+        document.getElementById(`intermediate${index}`).disabled = false;
+        document.getElementById(`expert${index}`).disabled = false;
+        techonologiesVarArr[`checkedBox${index}`] = true;
+      } else {
+        document
+          .getElementById(`beginner${index}`)
+          .setAttribute("disabled", "disabled");
+        document
+          .getElementById(`intermediate${index}`)
+          .setAttribute("disabled", "disabled");
+        document
+          .getElementById(`expert${index}`)
+          .setAttribute("disabled", "disabled");
+        techonologiesVarArr[`checkedBox${index}`] = false;
+      }
+    }
+
+    let lanCheckBox = false;
+    function handleLanguage(ele, index) {
+      if (ele.checked) {
+        let row = document.getElementById(`lanRow${index}`);
+        document.getElementById(`read${index}`).disabled = false;
+
+        document.getElementById(`write${index}`).disabled = false;
+
+        document.getElementById(`speak${index}`).disabled = false;
+
+        langCheckedArr[`lanCheckBox${index}`] = true;
+      } else {
+        document
+          .getElementById(`read${index}`)
+          .setAttribute("disabled", "disabled");
+        document
+          .getElementById(`write${index}`)
+          .setAttribute("disabled", "disabled");
+        document
+          .getElementById(`speak${index}`)
+          .setAttribute("disabled", "disabled");
+        langCheckedArr[`lanCheckBox${index}`] = false;
+      }
+    }
+
+    document.getElementById("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      console.log("Submited");
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      const res = await fetch("http://localhost:5000/insertdata", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+    });
+  </script>
+</html>
