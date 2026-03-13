@@ -88,21 +88,26 @@
             <tr>
               <td>1</td>
               <td>
-                <input type="text" class="course" name="course1" id="course1" />
+                <input
+                  type="text"
+                  class="course"
+                  name="course[]"
+                  id="course1"
+                />
               </td>
               <td>
                 <input
                   type="text"
                   class="passyear"
-                  name="passYear1"
+                  name="passYear[]"
                   id="passYear1"
                 />
               </td>
               <td>
-                <input type="text" name="uni1" class="univercity" id="uni1" />
+                <input type="text" name="uni[]" class="univercity" id="uni1" />
               </td>
               <td>
-                <input type="text" name="res1" class="result" id="res1" />
+                <input type="text" name="res[]" class="result" id="res1" />
               </td>
             </tr>
           </table>
@@ -124,31 +129,35 @@
               <th>To</th>
               <th>Anual Package</th>
               <th>Reason To Leave</th>
+              <th>Designation</th>
               <th>Ref Contact No.</th>
               <th>Ref. Contact Name</th>
             </tr>
             <tr>
               <td>1</td>
               <td>
-                <input type="text" name="company1" id="company1" />
+                <input type="text" name="company[]" id="company1" />
               </td>
               <td>
-                <input type="date" name="from1" id="from1" />
+                <input type="date" name="from[]" id="from1" />
               </td>
               <td>
-                <input type="date" name="to1" id="to1" />
+                <input type="date" name="to[]" id="to1" />
               </td>
               <td>
-                <input type="text" name="package1" id="package1" />
+                <input type="text" name="package[]" id="package1" />
               </td>
               <td>
-                <input type="text" name="reason1" id="reason1" />
+                <input type="text" name="reason[]" id="reason1" />
               </td>
               <td>
-                <input type="text" name="refContact1" id="refContact1" />
+                <input type="text" name="designation[]" id="designation1" />
               </td>
               <td>
-                <input type="text" name="refName1" id="refName1" />
+                <input type="text" name="refContact[]" id="refContact1" />
+              </td>
+              <td>
+                <input type="text" name="refName[]" id="refName1" />
               </td>
             </tr>
           </table>
@@ -206,17 +215,17 @@
             <tr>
               <td>1</td>
               <td>
-                <input type="text" name="referenceName1" id="referenceName1" />
+                <input type="text" name="referenceName[]" id="referenceName1" />
               </td>
               <td>
                 <input
                   type="text"
-                  name="referenceContact1"
+                  name="referenceContact[]"
                   id="referenceContact1"
                 />
               </td>
               <td>
-                <input type="text" name="relation1" id="relation1" />
+                <input type="text" name="relation[]" id="relation1" />
               </td>
             </tr>
           </table>
@@ -348,11 +357,13 @@
       let newRow = educationTable.insertRow();
       newRow.insertCell(0).innerHTML = `${index}`;
       newRow.insertCell(1).innerHTML =
-        `<input type="text" id="course${index}">`;
+        `<input type="text" name="course[]" id="course${index}">`;
       newRow.insertCell(2).innerHTML =
-        `<input type="text" id="passYear${index}">`;
-      newRow.insertCell(3).innerHTML = `<input type="text" id="uni${index}">`;
-      newRow.insertCell(4).innerHTML = `<input type="text" id="res${index}">`;
+        `<input type="text" name="passYear[]" id="passYear${index}">`;
+      newRow.insertCell(3).innerHTML =
+        `<input type="text" name="uni[]" id="uni${index}">`;
+      newRow.insertCell(4).innerHTML =
+        `<input type="text" name="res[]" id="res${index}">`;
 
       validate.addField(`#course${index}`, [{ rule: "required" }]);
       validate.addField(`#passYear${index}`, [
@@ -378,7 +389,7 @@
     let wplusBtn = document.getElementById("w-plus");
     let wminusBtn = document.getElementById("w-minus");
     let windex = 2;
-
+    validate.addField("#designation1", [{ rule: "required" }]);
     validate.addField("#company1", [{ rule: "required" }]);
     validate.addField("#from1", [{ rule: "required" }]);
     validate.addField("#to1", [{ rule: "required" }]);
@@ -396,17 +407,21 @@
       let newRow = workTable.insertRow();
       newRow.insertCell(0).innerHTML = `${windex}`;
       newRow.insertCell(1).innerHTML =
-        `<input type="text" id="company${windex}">`;
-      newRow.insertCell(2).innerHTML = `<input type="date" id="from${windex}">`;
-      newRow.insertCell(3).innerHTML = `<input type="date" id="to${windex}">`;
+        `<input type="text" name="company[]" id="company${windex}">`;
+      newRow.insertCell(2).innerHTML =
+        `<input type="date" name="from[]" id="from${windex}">`;
+      newRow.insertCell(3).innerHTML =
+        `<input type="date" name="to[]" id="to${windex}">`;
       newRow.insertCell(4).innerHTML =
-        `<input type="text" id="package${windex}">`;
+        `<input type="text" name="package[]" id="package${windex}">`;
       newRow.insertCell(5).innerHTML =
-        `<input type="text" id="reason${windex}">`;
+        `<input type="text" name="reason[]" id="reason${windex}">`;
       newRow.insertCell(6).innerHTML =
-        `<input type="text" id="refContact${windex}">`;
+        `<input type="text" name="designation[]" id="designation${windex}">`;
       newRow.insertCell(7).innerHTML =
-        `<input type="text" id="refName${windex}">`;
+        `<input type="text" name="refContact[]" id="refContact${windex}">`;
+      newRow.insertCell(8).innerHTML =
+        `<input type="text" name="refName[]" id="refName${windex}">`;
 
       validate.addField(`#company${windex}`, [{ rule: "required" }]);
       validate.addField(`#from${windex}`, [{ rule: "required" }]);
@@ -416,6 +431,7 @@
         { rule: "number" },
       ]);
       validate.addField(`#reason${windex}`, [{ rule: "required" }]);
+      validate.addField(`#designation${windex}`, [{ rule: "required" }]);
       validate.addField(`#refContact${windex}`, [
         {
           validator: (value) => /^[0-9]{10}$/.test(value),
@@ -452,11 +468,11 @@
       let newRow = referenceTable.insertRow();
       newRow.insertCell(0).innerHTML = `${rindex}`;
       newRow.insertCell(1).innerHTML =
-        `<input type="text" id="referenceName${rindex}">`;
+        `<input type="text" name="referenceName[]" id="referenceName${rindex}">`;
       newRow.insertCell(2).innerHTML =
-        `<input type="text" id="referenceContact${rindex}">`;
+        `<input type="text" name="referenceContact[]" id="referenceContact${rindex}">`;
       newRow.insertCell(3).innerHTML =
-        `<input type="text" id="relation${rindex}">`;
+        `<input type="text" name="relation[]" id="relation${rindex}">`;
 
       validate.addField(`#referenceName${rindex}`, [
         { rule: "required", errorMessage: "Reference name is required" },
@@ -594,21 +610,53 @@
         langCheckedArr[`lanCheckBox${index}`] = false;
       }
     }
+    validate.onSuccess(() => {
+      document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        console.log("Submited");
 
-    document.getElementById("form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      console.log("Submited");
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        const preferenceLocation = formData.getAll("location[]");
+        const course = formData.getAll("course[]");
+        const passYear = formData.getAll("passYear[]");
+        const uni = formData.getAll("uni[]");
+        const resultData = formData.getAll("res[]");
+        const company = formData.getAll("company[]");
+        const from = formData.getAll("from[]");
+        const to = formData.getAll("to[]");
+        const packageData = formData.getAll("package[]");
+        const reason = formData.getAll("reason[]");
+        const refContact = formData.getAll("refContact[]");
+        const refName = formData.getAll("refName[]");
+        const designation = formData.getAll("designation[]");
+        const referrenceName = formData.getAll("referenceName[]");
+        const referrenceContact = formData.getAll("referenceContact[]");
+        const relation = formData.getAll("relation[]");
 
-      const formData = new FormData(e.target);
-      const data = Object.fromEntries(formData.entries());
-      const preferenceLocation = formData.getAll("location[]");
-      data["location[]"] = preferenceLocation;
-      const res = await fetch("http://localhost:5000/insertdata", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        data["location[]"] = preferenceLocation;
+        data["course[]"] = course;
+        data["passYear[]"] = passYear;
+        data["uni[]"] = uni;
+        data["res[]"] = resultData;
+        data["company[]"] = company;
+        data["from[]"] = from;
+        data["to[]"] = to;
+        data["package[]"] = packageData;
+        data["reason[]"] = reason;
+        data["refContact[]"] = refContact;
+        data["refName[]"] = refName;
+        data["designation[]"] = designation;
+        data["referrenceName[]"] = referrenceName;
+        data["referrenceContact[]"] = referrenceContact;
+        data["relation[]"] = relation;
+        const res = await fetch("http://localhost:5000/insertdata", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
       });
     });
   </script>
