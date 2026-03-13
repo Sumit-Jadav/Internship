@@ -120,3 +120,22 @@ CREATE TABLE IF NOT EXISTS applicant_preferences (
     CONSTRAINT pk_preference_id PRIMARY KEY(id),
     CONSTRAINT fk_preferences_applicants FOREIGN KEY(applicant_id) REFERENCES job_applicants(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+select * from job_applicants;
+select * from applicants_address;
+select * from education_details;
+select * from work_experiences;
+select * from applicant_preferences;
+select * from job_references;
+
+SET FOREIGN_KEY_CHECKS=0;
+truncate table job_applicants;
+truncate table applicants_address;
+truncate table education_details;
+truncate table work_experiences;
+truncate table applicant_preferences;
+truncate table job_references;
+SET FOREIGN_KEY_CHECKS=1;
+
+
+
