@@ -20,13 +20,6 @@ async function startServer() {
   }
 }
 
-function groupFields(body, prefix) {
-  const groupedData = [];
-  for (const key in body) {
-  }
-  return groupedData;
-}
-
 startServer();
 app.get("/", (req, res) => {
   res.render("index", { data });
@@ -67,6 +60,22 @@ app.post("/insertdata", async (req, res) => {
     status,
     birth,
   } = req.body;
+
+  const courses = req.body["course[]"];
+  const passYears = req.body["passYear[]"];
+  const universities = req.body["uni[]"];
+  const results = req.body["res[]"];
+  const company = req.body["company[]"];
+  const from = req.body["from[]"];
+  const to = req.body["to[]"];
+  const packageData = req.body["package[]"];
+  const reason = req.body["reason[]"];
+  const refContact = req.body["refContact[]"];
+  const refName = req.body["refName[]"];
+  const designations = req.body["designation[]"];
+  const referenceName = req.body["referenceName[]"];
+  const referenceContact = req.body["referenceContact[]"];
+  const relation = req.body["relation[]"];
   console.log(data);
 
   const email = "demoemail2@example.com";
@@ -89,6 +98,32 @@ app.post("/insertdata", async (req, res) => {
     );
 
     //inserting educational data
+    for (let i = 0; i < courses.length; i++) {
+      const [eduData] = await db.execute(
+        `insert into education_details(applicant_id,course,passing_year,university,result) values (${lastid},'${courses[i]}',${passYears[i]},'${universities[i]}','${results[i]}')`,
+      );
+    }
+
+    // Inserting experience data
+    for (let i = 0; i < company.length; i++) {
+      console.log(from[i]);
+
+      const [expData] = await db.execute(
+        `insert into work_experiences(applicant_id,company_name,designation,from_date,to_date,annual_package,reason_to_leave,ref_contact_name,ref_contact_number) values(${lastid},'${company[i]}','${designations[i]}',${from[i]},${to[i]},'${packageData[i]}','${reason[i]}','${refName[i]}','${refContact[i]}')`,
+      );
+    }
+
+    // Inserting reference data
+    for (let i = 0; i < referenceName.length; i++) {
+      const [referenceData] = await db.execute(
+        `insert into job_references(applicant_id,reference_name,reference_contact,relation) values(${lastid},'${referenceName[i]}','${referenceContact[i]}','${relation[i]}')`,
+      );
+    }
+
+    // Inserting preference data
+    const [preferenceData] = await db.execute(
+      `insert into applicant_preferences(applicant_id,prefer_location,notice_period,expected_ctc,current_ctc,department) values(${lastid},'${data["location[]"].join(",")}','${data.notice}',${data.expected},${data.current},'${data.department}')`,
+    );
   } catch (e) {
     console.error("Error occurred while inserting data:", e.message);
   }
