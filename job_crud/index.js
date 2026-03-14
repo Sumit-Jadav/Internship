@@ -22,6 +22,36 @@ async function startServer() {
 
 startServer();
 app.get("/", (req, res) => {
+  const data = [
+    {
+      id: 1,
+      name: "Sumit Jadav",
+      phone: "9876543210",
+      email: "sumit@example.com",
+      designation: "Node.js Developer",
+      address: "123 Main St",
+      city: "Ahmedabad",
+      state: "Gujarat",
+      pincode: "380001",
+      gender: "Male",
+      status: "Single",
+      dob: "2000-01-01",
+    },
+    {
+      id: 2,
+      name: "John Doe",
+      phone: "9012345678",
+      email: "john@example.com",
+      designation: "Full Stack Developer",
+      address: "456 Sector 5",
+      city: "Delhi",
+      state: "Delhi",
+      pincode: "110001",
+      gender: "Male",
+      status: "Married",
+      dob: "1995-05-15",
+    },
+  ];
   res.render("index", { data });
 });
 
@@ -78,7 +108,7 @@ app.post("/insertdata", async (req, res) => {
   const relation = req.body["relation[]"];
   console.log(data);
 
-  const email = "demoemail2@example.com";
+  const email = "demoemail4567@example.com";
   try {
     // Insering Personal Data
     const [response] = await db.execute(
@@ -94,13 +124,15 @@ app.post("/insertdata", async (req, res) => {
     console.log(lastid);
     // Inserting Address Data
     const [addressData] = await db.execute(
-      `insert into applicants_address(applicant_id,first_line,second_line,applicant_city,applicant_state,applicant_pincode) values (${lastid},'${fline}','${sline}','${city}','${state}',${zipcode})`,
+      `insert into applicants_address(applicant_id,first_line,second_line,applicant_city,applicant_state,applicant_pincode) values (?,?,?,?,?,?)`,
+      [lastid, fline, sline, city, state, zipcode],
     );
 
     //inserting educational data
     for (let i = 0; i < courses.length; i++) {
       const [eduData] = await db.execute(
-        `insert into education_details(applicant_id,course,passing_year,university,result) values (${lastid},'${courses[i]}',${passYears[i]},'${universities[i]}','${results[i]}')`,
+        `insert into education_details(applicant_id,course,passing_year,university,result) values (?,?,?,?,?)`,
+        [lastid, courses[i], passYears[i], universities[i], results[i]],
       );
     }
 
@@ -109,21 +141,59 @@ app.post("/insertdata", async (req, res) => {
       console.log(from[i]);
 
       const [expData] = await db.execute(
-        `insert into work_experiences(applicant_id,company_name,designation,from_date,to_date,annual_package,reason_to_leave,ref_contact_name,ref_contact_number) values(${lastid},'${company[i]}','${designations[i]}',${from[i]},${to[i]},'${packageData[i]}','${reason[i]}','${refName[i]}','${refContact[i]}')`,
+        `insert into work_experiences(applicant_id,company_name,designation,from_date,to_date,annual_package,reason_to_leave,ref_contact_name,ref_contact_number) values(?,?,?,?,?,?,?,?,?)`,
+        [
+          lastid,
+          company[i],
+          designations[i],
+          from[i],
+          to[i],
+          packageData[i],
+          reason[i],
+          refName[i],
+          refContact[i],
+        ],
       );
     }
 
     // Inserting reference data
     for (let i = 0; i < referenceName.length; i++) {
       const [referenceData] = await db.execute(
-        `insert into job_references(applicant_id,reference_name,reference_contact,relation) values(${lastid},'${referenceName[i]}','${referenceContact[i]}','${relation[i]}')`,
+        `insert into job_references(applicant_id,reference_name,reference_contact,relation) values(?,?,?,?)`,
+        [lastid, referenceName[i], referenceContact[i], relation[i]],
       );
     }
 
     // Inserting preference data
     const [preferenceData] = await db.execute(
-      `insert into applicant_preferences(applicant_id,prefer_location,notice_period,expected_ctc,current_ctc,department) values(${lastid},'${data["location[]"].join(",")}','${data.notice}',${data.expected},${data.current},'${data.department}')`,
+      `insert into applicant_preferences(applicant_id,prefer_location,notice_period,expected_ctc,current_ctc,department) values(?,?,?,?,?,?)`,
+      [
+        lastid,
+        data["location[]"].join(","),
+        data.notice,
+        data.ectc,
+        data.cctc,
+        data.department,
+      ],
     );
+
+    //Inserting Language Data
+    const selectedLanguages = req.body.selectedLanguages || [];
+    for (let lang of selectedLanguages) {
+      await db.execute(
+        "INSERT INTO language_known (applicant_id, language_name, can_read, can_write, can_speak) VALUES (?, ?, ?, ?, ?)",
+        [lastid, lang.name, lang.read, lang.write, lang.speak],
+      );
+    }
+
+    //Inserting Technology Data
+    const selectedTechs = req.body.selectedTechs || [];
+    for (let tech of selectedTechs) {
+      await db.execute(
+        "INSERT INTO technologies_known (applicant_id, technology_name, is_beginner, is_advance, is_expert) VALUES (?, ?, ?, ?, ?)",
+        [lastid, tech.name, tech.beginner, tech.intermediate, tech.expert],
+      );
+    }
   } catch (e) {
     console.error("Error occurred while inserting data:", e.message);
   }
