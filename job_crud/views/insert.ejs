@@ -617,39 +617,70 @@
 
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-        const preferenceLocation = formData.getAll("location[]");
-        const course = formData.getAll("course[]");
-        const passYear = formData.getAll("passYear[]");
-        const uni = formData.getAll("uni[]");
-        const resultData = formData.getAll("res[]");
-        const company = formData.getAll("company[]");
-        const from = formData.getAll("from[]");
-        const to = formData.getAll("to[]");
-        const packageData = formData.getAll("package[]");
-        const reason = formData.getAll("reason[]");
-        const refContact = formData.getAll("refContact[]");
-        const refName = formData.getAll("refName[]");
-        const designation = formData.getAll("designation[]");
-        const referrenceName = formData.getAll("referenceName[]");
-        const referrenceContact = formData.getAll("referenceContact[]");
-        const relation = formData.getAll("relation[]");
+        const arrayFields = [
+          "location[]",
+          "course[]",
+          "passYear[]",
+          "uni[]",
+          "res[]",
+          "company[]",
+          "from[]",
+          "to[]",
+          "package[]",
+          "reason[]",
+          "refContact[]",
+          "refName[]",
+          "designation[]",
+          "referenceName[]",
+          "referenceContact[]",
+          "relation[]",
+        ];
 
-        data["location[]"] = preferenceLocation;
-        data["course[]"] = course;
-        data["passYear[]"] = passYear;
-        data["uni[]"] = uni;
-        data["res[]"] = resultData;
-        data["company[]"] = company;
-        data["from[]"] = from;
-        data["to[]"] = to;
-        data["package[]"] = packageData;
-        data["reason[]"] = reason;
-        data["refContact[]"] = refContact;
-        data["refName[]"] = refName;
-        data["designation[]"] = designation;
-        data["referrenceName[]"] = referrenceName;
-        data["referrenceContact[]"] = referrenceContact;
-        data["relation[]"] = relation;
+        arrayFields.forEach((field) => {
+          data[field] = formData.getAll(field);
+        });
+
+        const languages = ["Hindi", "Gujarati", "English"];
+        const selectedLanguages = [];
+
+        languages.forEach((lang, i) => {
+          const index = i + 1;
+          const isKnown = document.querySelector(
+            `input[name="isKnown${index}"]`,
+          ).checked;
+          if (isKnown) {
+            selectedLanguages.push({
+              name: lang,
+              read: document.getElementById(`read${index}`).checked ? 1 : 0,
+              write: document.getElementById(`write${index}`).checked ? 1 : 0,
+              speak: document.getElementById(`speak${index}`).checked ? 1 : 0,
+            });
+          }
+        });
+        data.selectedLanguages = selectedLanguages;
+
+        const technologies = ["JAVA", "PYTHON", "PHP", ".NET"];
+        const selectedTechs = [];
+
+        technologies.forEach((tech, i) => {
+          const index = i + 1;
+          const isChecked = document.querySelector(
+            `input[name="isChecked${index}"]`,
+          ).checked;
+          if (isChecked) {
+            const level = document.querySelector(
+              `input[name="radio${index}"]:checked`,
+            )?.value;
+            selectedTechs.push({
+              name: tech,
+              beginner: level === "beginner" ? 1 : 0,
+              intermediate: level === "intermediate" ? 1 : 0,
+              expert: level === "expert" ? 1 : 0,
+            });
+          }
+        });
+        data.selectedTechs = selectedTechs;
+
         const res = await fetch("http://localhost:5000/insertdata", {
           method: "POST",
           headers: {
