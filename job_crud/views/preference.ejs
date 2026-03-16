@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preference Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <h1 style="text-align:center">Preference Details</h1>
+    <table class="table table-bordered table-responsive">
+        <tr>
+            <td>Sr No.</td>
+            <td>Prefer Location</td>
+            <td>Notice Period</td>
+            <td>Expected CTC</td>
+            <td>Current CTC</td>
+            <td>Department</td>
+            <td>Actions</td>
+        </tr>
+        <% preference.forEach((pref,index) =>{%>
+        <tr>
+            <td><%= index + 1 %></td>
+            <td><%= pref.prefer_location %></td>
+            <td><%= pref.notice_period %></td>
+            <td><%= pref.expected_ctc %></td>
+            <td><%= pref.current_ctc%></td>
+            <td><%= pref.department%></td>
+            <td>
+                <a href="/edit-preference?id=<%=pref.id%>" class="btn btn-primary">Edit</a>
+                <a href="/delete-preference?id=<%=pref.id%>" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+        <%}); %>
+    </table>
+    <a href="/" class="btn btn-primary">Home</a>
+</body>
+</html>
