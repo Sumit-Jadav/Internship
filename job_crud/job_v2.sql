@@ -138,4 +138,48 @@ truncate table job_references;
 SET FOREIGN_KEY_CHECKS=1;
 
 
+select * from job_applicants;
+select * from applicants_address;
+select * from education_details;
+select * from work_experiences;
+select * from applicant_preferences;
+select * from job_references;
+select * from language_known;
+select * from technologies_known;
 
+
+SET FOREIGN_KEY_CHECKS=0;
+truncate table job_applicants;
+truncate table applicants_address;
+truncate table education_details;
+truncate table work_experiences;
+truncate table applicant_preferences;
+truncate table job_references;
+truncate table language_known;
+truncate table technologies_known;
+SET FOREIGN_KEY_CHECKS=1;
+
+
+SELECT * FROM language_known inner join job_applicants on language_known.applicant_id = job_applicants.id;
+
+
+insert into job_applicants(first_name,last_name,email_address,phone_number,applied_designation,date_of_birth,gender,relationship_status) VALUES('John','Doe','john.doe@example.com','9876543210','Software Engineer','1990-01-01','Male','Single');
+
+insert into applicants_address(applicant_id,first_line,second_line,applicant_city,applicant_state,applicant_pincode) values(4,'123 Main St','Apt 4B','New York','NY','10001');
+
+
+insert into education_details(applicant_id,course,university,passing_year,result) values(4,'B.Tech','IIT Bombay',2020 , 78.01);
+
+
+INSERT INTO work_experiences(applicant_id,company_name,designation,from_date,to_date,reason_to_leave,annual_package,ref_contact_name,ref_contact_number) VALUES(4,'Google','Software Engineer','2020-08-01','2023-05-31','Career Growth',1200000,'John Doe','9876543210');
+
+
+INSERT INTO applicant_preferences(applicant_id,prefer_location,expected_ctc,notice_period,current_ctc,department) VALUES(4,'Bangalore',1500000,'2',1200000,'Designer');
+
+insert into job_references(applicant_id,reference_name,reference_contact,relation) values(4,'Masha','9876543210','Colleague');
+
+
+insert into language_known (applicant_id,language_name,can_read,can_write,can_speak) values(4,'English',1,1,1);
+
+
+insert into technologies_known (applicant_id,technology_name,is_beginner,is_advance,is_expert) values(4,'PHP',1,0,0);
