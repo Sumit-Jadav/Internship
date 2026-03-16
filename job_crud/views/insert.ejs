@@ -48,6 +48,8 @@
           <br />
           <label for="phone">Phone Number</label>
           <input type="text" name="phone" id="phone" />
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" />
           <br /><br />
           <div class="radio-group">
             <label for="gender">Gender</label>
@@ -278,6 +280,11 @@
         validator: (value) => /^[A-Za-z]+$/.test(value),
         errorMessage: "Only alphabets allowed",
       },
+    ]);
+
+    validate.addField("#email", [
+      { rule: "required", errorMessage: "Email is required" },
+      { rule: "email", errorMessage: "Email is not valid" },
     ]);
 
     validate.addField("#lname", [
@@ -610,84 +617,100 @@
         langCheckedArr[`lanCheckBox${index}`] = false;
       }
     }
-    validate.onSuccess(() => {
-      document.getElementById("form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        console.log("Submited");
 
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-        const arrayFields = [
-          "location[]",
-          "course[]",
-          "passYear[]",
-          "uni[]",
-          "res[]",
-          "company[]",
-          "from[]",
-          "to[]",
-          "package[]",
-          "reason[]",
-          "refContact[]",
-          "refName[]",
-          "designation[]",
-          "referenceName[]",
-          "referenceContact[]",
-          "relation[]",
-        ];
+    function getAllLanguages() {
+      const selectedLanguages = [];
 
-        arrayFields.forEach((field) => {
-          data[field] = formData.getAll(field);
-        });
+      language.forEach((lang, i) => {
+        const index = i + 1;
+        const isKnown = document.querySelector(
+          `input[name="isKnown${index}"]`,
+        ).checked;
+        if (isKnown) {
+          selectedLanguages.push({
+            name: lang,
+            read: document.getElementById(`read${index}`).checked ? 1 : 0,
+            write: document.getElementById(`write${index}`).checked ? 1 : 0,
+            speak: document.getElementById(`speak${index}`).checked ? 1 : 0,
+          });
+        }
+      });
+      return selectedLanguages;
+    }
 
-        const languages = ["Hindi", "Gujarati", "English"];
-        const selectedLanguages = [];
+    function getAllTechonologies() {
+      const selectedTechs = [];
 
-        languages.forEach((lang, i) => {
-          const index = i + 1;
-          const isKnown = document.querySelector(
-            `input[name="isKnown${index}"]`,
-          ).checked;
-          if (isKnown) {
-            selectedLanguages.push({
-              name: lang,
-              read: document.getElementById(`read${index}`).checked ? 1 : 0,
-              write: document.getElementById(`write${index}`).checked ? 1 : 0,
-              speak: document.getElementById(`speak${index}`).checked ? 1 : 0,
-            });
-          }
-        });
-        data.selectedLanguages = selectedLanguages;
+      techonologies.forEach((tech, i) => {
+        const index = i + 1;
+        const isChecked = document.querySelector(
+          `input[name="isChecked${index}"]`,
+        ).checked;
+        if (isChecked) {
+          const level = document.querySelector(
+            `input[name="radio${index}"]:checked`,
+          )?.value;
+          selectedTechs.push({
+            name: tech,
+            beginner: level === "beginner" ? 1 : 0,
+            intermediate: level === "intermediate" ? 1 : 0,
+            expert: level === "expert" ? 1 : 0,
+          });
+        }
+      });
+      return selectedTechs;
+    }
 
-        const technologies = ["JAVA", "PYTHON", "PHP", ".NET"];
-        const selectedTechs = [];
+    validate.onSuccess(async (e) => {
+      console.log("All clear");
 
-        technologies.forEach((tech, i) => {
-          const index = i + 1;
-          const isChecked = document.querySelector(
-            `input[name="isChecked${index}"]`,
-          ).checked;
-          if (isChecked) {
-            const level = document.querySelector(
-              `input[name="radio${index}"]:checked`,
-            )?.value;
-            selectedTechs.push({
-              name: tech,
-              beginner: level === "beginner" ? 1 : 0,
-              intermediate: level === "intermediate" ? 1 : 0,
-              expert: level === "expert" ? 1 : 0,
-            });
-          }
-        });
-        data.selectedTechs = selectedTechs;
+      e.preventDefault();
+      console.log("Submited");
 
-        const res = await fetch("http://localhost:5000/insertdata", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      const preferenceLocation = formData.getAll("location[]");
+      const course = formData.getAll("course[]");
+      const passYear = formData.getAll("passYear[]");
+      const uni = formData.getAll("uni[]");
+      const resultData = formData.getAll("res[]");
+      const company = formData.getAll("company[]");
+      const from = formData.getAll("from[]");
+      const to = formData.getAll("to[]");
+      const packageData = formData.getAll("package[]");
+      const reason = formData.getAll("reason[]");
+      const refContact = formData.getAll("refContact[]");
+      const refName = formData.getAll("refName[]");
+      const designation = formData.getAll("designation[]");
+      const referrenceName = formData.getAll("referenceName[]");
+      const referrenceContact = formData.getAll("referenceContact[]");
+      const relation = formData.getAll("relation[]");
+      const languageData = getAllLanguages();
+      const techonologyData = getAllTechonologies();
+      data["location[]"] = preferenceLocation;
+      data["course[]"] = course;
+      data["passYear[]"] = passYear;
+      data["uni[]"] = uni;
+      data["res[]"] = resultData;
+      data["company[]"] = company;
+      data["from[]"] = from;
+      data["to[]"] = to;
+      data["package[]"] = packageData;
+      data["reason[]"] = reason;
+      data["refContact[]"] = refContact;
+      data["refName[]"] = refName;
+      data["designation[]"] = designation;
+      data["referenceName[]"] = referrenceName;
+      data["referenceContact[]"] = referrenceContact;
+      data["relation[]"] = relation;
+      data.languageData = languageData;
+      data.techonologyData = techonologyData;
+      const res = await fetch("http://localhost:5000/insertdata", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
     });
   </script>
