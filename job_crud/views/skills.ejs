@@ -10,22 +10,24 @@
     />
   </head>
   <body>
-    <h1>Language Data</h1>
+    <h1>Techonology Data</h1>
     <table class="table table-responsive">
       <tr>
         <th>ID</th>
         <th>Techonology</th>
         <th>Proficiency</th>
+        <th>Actions</th>
       </tr>
       <%skills.forEach(item => {%>
         <tr>
             <td><%= item.id%></td>
-            <td><%= item.name%></td>
-            <td><%= item.proficiency%></td>
-            
-        </tr>
+            <td><%= item.technology_name%></td>
+            <td><%= item.is_beginner == 1 ? 'Beginner' : item.is_advance == 1 ? 'Intermediate' : 'Expert' %></td>  
+            <td><a href="/edit-skill?id=<%=item.id%>" class="btn btn-primary">Edit</a> <a href="/delete-skill?id=<%= item.id%>" class="btn btn-danger">Delete</a></td>
+          </tr>
       <%})%>  
     </table>
+    <a href="/" class="btn text-decoration-none btn-primary">Back</a>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </html>
