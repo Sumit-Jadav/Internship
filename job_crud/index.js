@@ -21,37 +21,12 @@ async function startServer() {
 }
 
 startServer();
-app.get("/", (req, res) => {
-  const data = [
-    {
-      id: 1,
-      name: "Sumit Jadav",
-      phone: "9876543210",
-      email: "sumit@example.com",
-      designation: "Node.js Developer",
-      address: "123 Main St",
-      city: "Ahmedabad",
-      state: "Gujarat",
-      pincode: "380001",
-      gender: "Male",
-      status: "Single",
-      dob: "2000-01-01",
-    },
-    {
-      id: 2,
-      name: "John Doe",
-      phone: "9012345678",
-      email: "john@example.com",
-      designation: "Full Stack Developer",
-      address: "456 Sector 5",
-      city: "Delhi",
-      state: "Delhi",
-      pincode: "110001",
-      gender: "Male",
-      status: "Married",
-      dob: "1995-05-15",
-    },
-  ];
+app.get("/", async (req, res) => {
+  const [data] = await db.execute(
+    `SELECT a.id,a.first_name,a.last_name,phone_number,a.email_address,a.gender,a.date_of_birth,a.applied_designation,a.relationship_status,ad.first_line,ad.second_line,ad.applicant_city,ad.applicant_state,ad.applicant_pincode from job_applicants as a inner join applicants_address as ad on a.id = ad.applicant_id`,
+  );
+  console.log(JSON.stringify(data));
+
   res.render("index", { data });
 });
 
@@ -59,20 +34,138 @@ app.get("/insert", (req, res) => {
   res.status(200).render("insert");
 });
 
-app.get("/lan", (req, res) => {
-  const id = req.query.id;
+app.get("/lan", async (req, res) => {
+  const id = parseInt(req.query.id);
   try {
-    const [lanData] = db.execute(
-      `SELECT * FROM languages where applicant_id = ${id}`,
+    const [lanData] = await db.execute(
+      `SELECT * FROM language_known where applicant_id = ?`,
+      [id],
     );
+    console.log(JSON.stringify(lanData));
+
+    res.status(200).render("language", { lanData });
   } catch (e) {
     console.log(`Error while fetching language:${e.message}`);
+    res.status(500).render("language", { lanData: [] });
   }
-
-  res.status(200).render("language", { lan });
 });
 
-app.get("/skill", (req, res) => res.render("skills", { skills }));
+app.get("/skill", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [skills] = await db.execute(
+      "SELECT * FROM technologies_known where applicant_id = ?",
+      [id],
+    );
+    console.log(JSON.stringify(skills));
+    res.render("skills", { skills });
+  } catch (error) {
+    console.log(`Error occure while fetching skills :${error.message}`);
+  }
+});
+
+app.get("/work", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [workExperience] = await db.execute(
+      "SELECT * FROM work_experiences where applicant_id = ?",
+      [id],
+    );
+    console.log(JSON.stringify(workExperience));
+    res.render("work", { work: workExperience });
+  } catch (error) {
+    console.log(`Error occure while fetching work experience:${error.message}`);
+  }
+});
+
+app.get("/edu", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [education] = await db.execute(
+      "SELECT * FROM education_details where applicant_id = ?",
+      [id],
+    );
+    console.log(JSON.stringify(education));
+    res.render("education", { education });
+  } catch (error) {
+    console.log(
+      `Error occure while fetching education records:${error.message}`,
+    );
+  }
+});
+
+app.get("/ref", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [reference] = await db.execute(
+      "select * from job_references where applicant_id = ?",
+      [id],
+    );
+    res.status(200).render("reference", { reference });
+  } catch (error) {
+    console.log(
+      `Error occure while fetching reference details:-${error.message}`,
+    );
+  }
+});
+
+app.get("/pref", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [preference] = await db.execute(
+      "select * from applicant_preferences where applicant_id = ?",
+      [id],
+    );
+    res.status(200).render("preference", { preference });
+  } catch (e) {
+    console.log(`Error occure while fetching preference data:${e.message}`);
+  }
+});
+
+app.get("/delete-education", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+
+    const [result] = await db.execute(
+      "DELETE FROM education_details where id = ?",
+      [id],
+    );
+
+    if (result.affectedRows > 0) {
+      console.log(`Education record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Education record deleted successfully." });
+    } else {
+      console.log(`No education record found with id ${id}.`);
+      res.status(404).json({ message: "Education record not found." });
+    }
+  } catch (e) {
+    console.log(`Error occure while deleting education details ${e.message}`);
+  }
+});
+
+app.get("/delete-experience", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [result] = await db.execute(
+      "delete from work_experiences where id = ?",
+      [id],
+    );
+
+    if (result.affectedRows > 0) {
+      console.log(`Work experience record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Work experience record deleted successfully." });
+    } else {
+      console.log(`No work experience record found with id ${id}.`);
+      res.status(404).json({ message: "Work experience record not found." });
+    }
+  } catch (error) {
+    console.log(`Error while deleting experience${error.message}`);
+  }
+});
 
 app.post("/insertdata", async (req, res) => {
   const data = req.body;
@@ -106,14 +199,14 @@ app.post("/insertdata", async (req, res) => {
   const referenceName = req.body["referenceName[]"];
   const referenceContact = req.body["referenceContact[]"];
   const relation = req.body["relation[]"];
-  console.log(data);
+  console.log(req.body);
 
-  const email = "demoemail4567@example.com";
+  const email = req.body.email;
   try {
     // Insering Personal Data
     const [response] = await db.execute(
       "INSERT INTO `job_applicants`(`first_name`, `last_name`, `email_address`, `phone_number`, `gender`, `date_of_birth`,`applied_designation`,`relationship_status`) VALUES (?,?,?,?,?,?,?,?)",
-      [fname, lname, email, phone, gender, birth, designation, status],
+      [fname, lname, email, String(phone), gender, birth, designation, status],
     );
     if (response.affectedRows > 0) {
       console.log(`Data inserted success`);
@@ -158,9 +251,16 @@ app.post("/insertdata", async (req, res) => {
 
     // Inserting reference data
     for (let i = 0; i < referenceName.length; i++) {
+      console.log(referenceName[i]);
+
       const [referenceData] = await db.execute(
         `insert into job_references(applicant_id,reference_name,reference_contact,relation) values(?,?,?,?)`,
-        [lastid, referenceName[i], referenceContact[i], relation[i]],
+        [
+          lastid,
+          String(referenceName[i]),
+          String(referenceContact[i]),
+          relation[i],
+        ],
       );
     }
 
@@ -170,7 +270,7 @@ app.post("/insertdata", async (req, res) => {
       [
         lastid,
         data["location[]"].join(","),
-        data.notice,
+        parseInt(data.notice),
         data.ectc,
         data.cctc,
         data.department,
@@ -178,7 +278,7 @@ app.post("/insertdata", async (req, res) => {
     );
 
     //Inserting Language Data
-    const selectedLanguages = req.body.selectedLanguages || [];
+    const selectedLanguages = req.body.languageData || [];
     for (let lang of selectedLanguages) {
       await db.execute(
         "INSERT INTO language_known (applicant_id, language_name, can_read, can_write, can_speak) VALUES (?, ?, ?, ?, ?)",
@@ -187,7 +287,7 @@ app.post("/insertdata", async (req, res) => {
     }
 
     //Inserting Technology Data
-    const selectedTechs = req.body.selectedTechs || [];
+    const selectedTechs = req.body.techonologyData || [];
     for (let tech of selectedTechs) {
       await db.execute(
         "INSERT INTO technologies_known (applicant_id, technology_name, is_beginner, is_advance, is_expert) VALUES (?, ?, ?, ?, ?)",
@@ -199,7 +299,157 @@ app.post("/insertdata", async (req, res) => {
   }
 
   console.log("URL hit");
-  console.log(data);
+  // console.log(data);
+});
+
+app.get("/delete-preference", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [result] = await db.execute(
+      "DELETE FROM applicant_preferences where id = ?",
+      [id],
+    );
+
+    if (result.affectedRows > 0) {
+      console.log(`Preference record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Preference record deleted successfully." });
+    } else {
+      console.log(`No preference record found with id ${id}.`);
+      res.status(404).json({ message: "Preference record not found." });
+    }
+  } catch (error) {
+    console.log(`Error occure while deleting preferences:${error.message}`);
+  }
+});
+
+app.get("/delete-reference", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [result] = await db.execute(
+      "delete from job_references where id = ?",
+      [id],
+    );
+    if (result.affectedRows > 0) {
+      console.log(`Reference record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Reference record deleted successfully." });
+    } else {
+      console.log(`No reference record found with id ${id}.`);
+      res.status(404).json({ message: "Reference record not found." });
+    }
+  } catch (error) {
+    console.log(`Error occure while deleting reference:${error.message}`);
+  }
+});
+
+app.get("/delete-language", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [result] = await db.execute(
+      "delete from language_known where id = ?",
+      [id],
+    );
+    if (result.affectedRows > 0) {
+      console.log(`Language record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Language record deleted successfully." });
+    } else {
+      console.log(`No language record found with id ${id}.`);
+      res.status(404).json({ message: "Language record not found." });
+    }
+  } catch (error) {
+    console.log(`Error occure while deleting language:${error.message}`);
+  }
+});
+
+app.get("/delete-skill", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [result] = await db.execute(
+      "delete from technologies_known where id = ?",
+      [id],
+    );
+    if (result.affectedRows > 0) {
+      console.log(`Techonology record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Techonology record deleted successfully." });
+    } else {
+      console.log(`No techonology record found with id ${id}.`);
+      res.status(404).json({ message: "Techonology record not found." });
+    }
+  } catch (e) {
+    console.log(`Error occure while deleting techonology:${e.message}`);
+  }
+});
+
+app.get("/delete-application", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [result] = await db.execute(
+      "DELETE from job_applicants where id = ?",
+      [id],
+    );
+    if (result.affectedRows > 0) {
+      console.log(`Application record with id ${id} deleted successfully.`);
+      res
+        .status(200)
+        .json({ message: "Application record deleted successfully." });
+    } else {
+      console.log(`No application record found with id ${id}.`);
+      res.status(404).json({ message: "Application record not found." });
+    }
+  } catch (e) {
+    console.log(`Error occure while deleting the application ${e.message}`);
+  }
+});
+
+app.get("/edit-application", async (req, res) => {
+  try {
+    const id = parseInt(req.query.id);
+    const [appData] = await db.execute(
+      "select * from job_applicants inner join applicants_address on job_applicants.id = applicants_address.applicant_id where job_applicants.id = ?",
+      [id],
+    );
+    // console.log(appData);
+    res.status(200).render("edit/application", { appData: appData[0] });
+  } catch (e) {
+    console.log(`Error occure while selecting:${e.message}`);
+  }
+});
+
+app.post("/edit-application", async (req, res) => {
+  try {
+    const id = req.body.id;
+    const fname = req.body.fname;
+    const lname = req.body.lname;
+    const phone = req.body.phone;
+    const email = req.body.email;
+    const gender = req.body.gender;
+    const birth = req.body.birth;
+    const designation = req.body.designation;
+    const status = req.body.status;
+
+    const [result] = await db.execute(
+      "update job_applicants set first_name=?,last_name=?,email_address=?,phone_number=?,gender=?,date_of_birth=?,designation=?,status=? where id=?",
+      [fname, lname, email, phone, gender, birth, designation, status, id],
+    );
+    if (result.affectedRows > 0) {
+      console.log(`Application record with id ${id} updated successfully.`);
+      res
+        .status(200)
+        .json({ message: "Application record updated successfully." });
+    } else {
+      console.log(`No application record found with id ${id}.`);
+      res.status(404).json({ message: "Application record not found." });
+    }
+  } catch (error) {
+    console.log(`Error occure while updating:${error.message}`);
+  }
 });
 
 app.listen(PORT, () => {
