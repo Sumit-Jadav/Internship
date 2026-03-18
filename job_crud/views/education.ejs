@@ -8,6 +8,9 @@
 </head>
 <body>
     <h1 style="text-align:center">Education Details</h1>
+    <div class="col col-12 d-flex justify-content-end ">
+        <a href="/edit-education?id=<%= id %>" class="btn btn-warning me-3 mb-3">Edit</a>
+    </div>
     <table class="table table-bordered table-responsive">
         <tr>
             <td>Sr No.</td>
@@ -25,7 +28,7 @@
             <td><%= edu.passing_year %></td>
             <td><%= edu.result %></td>
             <td>
-                <a href="/edit-education?id=<%= edu.id %>" class="btn btn-warning">Edit</a>
+                
                 <a href="/delete-education?id=<%= edu.id %>" class="btn btn-danger">Delete</a>
         </tr>
         <%}); %>

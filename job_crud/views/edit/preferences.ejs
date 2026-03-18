@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Preferences</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <h1 class="text-center m-3">Edit Preferences</h1>
+    <form action="/edit-preference" method="post" id="form">
+        <input type="hidden" name="id" value="<%= id%>">
+        <table class="table table-bordered table-responsive">
+            <tr>
+               
+                <td>Prefer Location</td>
+                <td>Notice Period</td>
+                <td>Expected CTC</td>
+                <td>Current CTC</td>
+                <td>Department</td>
+              
+            </tr>
+            <% prefData.forEach( (pref,index) =>{%>
+            <tr>
+                
+                 <td>
+                    <select name="location[]" id="location" multiple>
+                        <option value="remote" <%= data.includes("remote") ? 'selected' : ''%>>Remote</option>
+                        <option value="ahmedabad" <%= data.includes("ahmedabad")  ? 'selected' : ''%>>Ahmedabad</option>
+                        <option value="bhavnagar" <%= data.includes("bhavnagar")  ? 'selected' : ''%>>Bhavnagar</option>
+                    </select>
+                </td>
+                <td><input type="text" name="notice" id="" value="<%= pref.notice_period %>"></td>
+                <td><input type="text" name="ectc" id="" value="<%= pref.expected_ctc %>"></td>
+                <td><input type="text" name="cctc" id="" value="<%= pref.current_ctc%>"></td>
+                <td><input type="text" name="department" id="" value="<%= pref.department%>"></td>
+               
+            </tr>
+            <%}); %>
+        </table>
+        <div class="col col-12 d-flex justify-content-center">
+            <input type="submit" value="Submit" class="btn btn-primary">
+            <a href="/" class="btn btn-primary ms-3">Home</a>
+        </div>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Education Details</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <!-- <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script> -->
+  </head>
+  <body>
+    <h1 class="text-center">Edit Education Details</h1>
+    <div class="container">
+      <form action="/edit-education" method="post" id="form">
+        <input type="hidden" name="id" value="<%=id%>">
+        <div class="col col-12 d-flex justify-content-end mb-3">
+          <a  class="btn btn-secondary" id="e-plus">+</a>
+          <a class="btn btn-primary ms-3" id="e-minus">-</a>
+        </div>
+        <table class="table table-bordered table-responsive" id="education-table">
+          <tr>
+            <th>Course</th>
+            <th>University</th>
+            <th>Passing Year</th>
+            <th>Result</th>
+          </tr>
+          <% eduData.forEach(function(eduData) { %>
+          <tr>
+            <td>
+              <select name="course[]" id="course">
+                <option value="10th" <%= eduData.course === "10th" ? "selected" : "" %>>10th</option>
+                <option value="12th" <%= eduData.course === "12th" ? "selected" : "" %>>12th</option>
+                <option value="bachelor" <%= eduData.course === "bachelor" ? "selected" : "" %>>Bachelor's</option>
+                <option value="master" <%= eduData.course === "master" ? "selected" : "" %>>Master's</option>
+              </select>
+            </td>
+
+            <td>
+              <input
+                type="text"
+                name="university[]"
+                value="<%= eduData.university %>"
+              />
+            </td>
+            <td>
+              <input
+                type="text"
+                name="passing_year[]"
+                value="<%= eduData.passing_year %>"
+              />
+            </td>
+            <td>
+              <input type="text" name="result[]" value="<%= eduData.result %>" />
+            </td>
+          </tr>
+            <% }); %>
+        </table>
+        <div class="col col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" id="update">Update</button>
+            <a href="/" class="btn btn-primary ms-3">Home</a>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script>
+    let educationTable = document.getElementById("education-table");
+    let plusBtn = document.getElementById("e-plus");
+    let minusBtn = document.getElementById("e-minus");
+    let index = 2;
+    plusBtn.addEventListener("click", function () {
+      let newRow = educationTable.insertRow();
+      let courseCell = newRow.insertCell(0);
+      let universityCell = newRow.insertCell(1);
+      let passingYearCell = newRow.insertCell(2);
+      let resultCell = newRow.insertCell(3);
+
+      courseCell.innerHTML = `
+        <select name="course[]" id="course">
+          <option value="10th">10th</option>
+          <option value="12th">12th</option>
+          <option value="bachelor">Bachelor's</option>
+          <option value="master">Master's</option>
+        </select>
+      `;
+      universityCell.innerHTML = `<input type="text" name="university[]" />`;
+      passingYearCell.innerHTML = `<input type="text" name="passing_year[]" />`;
+      resultCell.innerHTML = `<input type="text" name="result[]" />`;
+
+      index++;
+    });
+    minusBtn.addEventListener("click", function () {
+      if (index > 2) {
+        educationTable.deleteRow(-1);
+        index--;
+      }
+    });
+
+    document.getElementById("update").addEventListener("click",(e) => {
+        document.getElementById("form").submit();
+    })
+
+
+  </script>
+</html>

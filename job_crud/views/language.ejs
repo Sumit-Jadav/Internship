@@ -11,6 +11,9 @@
   </head>
   <body>
     <h1 style="text-align:center">Language Known</h1>
+    <div class="col col-12 d-flex justify-content-end">
+            <a href="/edit-language?id=<%=id%>" class="me-3 btn btn-primary">Edit</a>
+        </div>
     <table class="table table-responsive">
       <tr>
         <!-- <th>ID</th> -->
@@ -23,11 +26,13 @@
       <%lanData.forEach(item => {%>
         <tr>
             <!-- <td><%= item.id%></td> -->
-            <td><%= item.language_name%></td>
+            <td>
+              <input type="hidden" name="lan[]" value="<%= item.name %>">
+              <%= item.language_name%></td>
             <td><%= item.can_read == 1 ? "Yes" : "No"%></td>
             <td><%= item.can_write == 1 ? "Yes" : "No"%></td>
             <td><%= item.can_speak == 1 ? "Yes" : "No"%></td>
-            <td><a href="/edit-language?id=<%=item.id%>" class="btn btn-primary">Edit</a> <a href="/delete-language?id=<%= item.id%>" class="btn btn-danger">Delete</a></td>
+            <td> <a href="/delete-language?id=<%= item.id%>" class="btn btn-danger">Delete</a></td>
           </tr>
       <%})%>  
     </table>

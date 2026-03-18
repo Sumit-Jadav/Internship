@@ -8,6 +8,9 @@
 </head>
 <body>
     <h1 style="text-align:center">Reference By</h1>
+    <div class="col col-12 d-flex justify-content-end mb-3">
+        <a href="/edit-reference?id=<%= id %>" class="btn btn-primary">Edit</a>
+    </div>
     <table class="table table-bordered table-responsive">
         <tr>
             <td>Sr No.</td>
@@ -22,7 +25,7 @@
             <td><%= ref.reference_name %></td>
             <td><%= ref.reference_contact %></td>
             <td><%= ref.relation %></td>
-            <td><a href="/edit-reference?id=<%= ref.id %>" class="btn btn-primary">Edit</a><a href="/delete-reference?id=<%= ref.id %>" class="btn btn-danger">Delete</a></td>
+            <td><a href="/delete-reference?id=<%= ref.id %>" class="btn btn-danger">Delete</a></td>
         </tr>
         <%}); %>
     </table>

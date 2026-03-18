@@ -10,10 +10,10 @@
     class="w-100 h-100 bg-light d-flex flex-column align-items-center justify-content-center"
   >
     <div
-      class="container w-100 p-2 d-flex align-items-center justify-content-center"
+      class="container p-2 d-flex flex-column align-items-center justify-content-center"
     >
       <h1>Job Application</h1>
-      <a href="./insert" class="btn d-block btn-primary">Insert Data</a>
+      <a href="./insert" class="btn  btn-primary align-self-end">Insert Data</a>
     </div>
     <div class="table-responsive" style="width: 95%;"> 
 
@@ -78,6 +78,20 @@
         </tr>
       <%});%>
       </table>
+    </div>
+    <div class="row">
+      <div class="col col-12 d-flex justify-content-center">
+        <%if(! (current_page == 1)){%>
+        <a href="?page=<%=1%>" class="btn btn btn-warning m-1"><<</a>
+        <%}%>
+        <%if((current_page > 1 )){%>
+        <a href="?page=<%= current_page - 1 %>" class="btn btn btn-warning m-1"><</a>
+        <%}%>
+        <%if(current_page < total_pages){%>
+        <a href="?page=<%= parseInt(current_page) + 1  %>" class="btn btn btn-warning m-1">></a>
+        <%}%>
+        <a href="?page=<%= total_pages %>" class="btn btn btn-warning m-1">>></a>
+      </div>
     </div>
   </body>
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" ></script>

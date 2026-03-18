@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <h1 class="text-center m-3">Edit Work Experience</h1>
+    <form action="/edit-work" id="form" method="post" >
+        <input type="hidden" name="id" value="<%=id%>">
+        <div class="col col-12 d-flex justify-content-end mb-3">
+          <a  class="btn btn-secondary" id="w-plus">+</a>
+          <a class="btn btn-primary ms-3" id="w-minus">-</a>
+        </div>
+        <table class="table table-responsive table-bordered " id="work-table">
+            <tr>
+    
+            <th>Company</th>
+            <th>Designation</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Annual Package</th>
+            <th>Reason to Leave</th>
+            <th>Reference Contact Name</th>
+            <th>Reference Contact Number</th>
+            
+            </tr>
+            <%workData.forEach((item,index) => {%>
+            <tr>
+                <td><input type="text" name="company[]" id="" value="<%= item.company_name%>"></td>
+                <td><input type="text" name="designation[]" value="<%= item.designation%>" id=""></td>
+                <td><input type="date" name="from[]" value="<%= new Date(fromDate[index].from_date).toISOString().split('T')[0] %>" ></td>
+                <td><input type="date" name="to[]" value="<%= new Date(toDate[index].to_date).toISOString().split('T')[0] %>" ></td>
+                <td><input type="text" name="package[]" value="<%= item.annual_package%>" id=""></td>
+                <td><input type="text" name="reason[]" value="<%= item.reason_to_leave%>" id=""></td>
+                <td><input type="text" name="ref_name[]" value="<%= item.ref_contact_name%>" id=""></td>
+                <td><input type="text" name="ref_contact[]" value="<%= item.ref_contact_number%>" id=""></td>
+                
+                </tr>
+            <%})%>  
+        </table>
+    </form>
+    <div class="row">
+        <div class="col col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" id="update">Update</button>
+            <a href="/" class="btn btn-primary ms-3">Home</a>
+        </div>  
+    </div>  
+</body>
+<script>
+    let workTable = document.getElementById("work-table");
+    let plusBtn = document.getElementById("w-plus");
+    let minusBtn = document.getElementById("w-minus");
+    let windex = <%= workData.length%>;
+    plusBtn.addEventListener("click",() => {
+        let newRow = workTable.insertRow();
+      
+      newRow.insertCell(0).innerHTML =
+        `<input type="text" name="company[]" ">`;
+      newRow.insertCell(1).innerHTML =
+      `<input type="text" name="designation[]" >`;
+      newRow.insertCell(2).innerHTML =
+        `<input type="date" name="from[]" ">`;
+      newRow.insertCell(3).innerHTML =
+        `<input type="date" name="to[]" ">`;
+      newRow.insertCell(4).innerHTML =
+        `<input type="text" name="package[]" >`;
+      newRow.insertCell(5).innerHTML =
+        `<input type="text" name="reason[]" >`;
+        newRow.insertCell(6).innerHTML =
+          `<input type="text" name="ref_name[]" >`;
+      newRow.insertCell(7).innerHTML =
+        `<input type="text" name="ref_contact[]" >`;
+        windex++;
+    })
+
+    minusBtn.addEventListener("click" , () => {
+        if(windex > 1){
+            workTable.deleteRow(-1);
+            windex--;
+        }
+    })
+    
+    
+    document.getElementById("update").addEventListener("click" , (e) => {
+        document.getElementById("form").submit();
+    })
+</script>
+</html>

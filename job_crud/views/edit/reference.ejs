@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Reference</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <h1 class="m-3 text-center">Edit References</h1>
+
+    <div class="container">
+      <form action="/edit-reference" method="post" id="form">
+        <input type="hidden" name="id" value="<%=id%>">
+        <div class="col col-12 d-flex justify-content-end mb-3">
+          <a  class="btn btn-secondary" id="r-plus">+</a>
+          <a class="btn btn-primary ms-3" id="r-minus">-</a>
+        </div>
+        <table class="table table-bordered table-responsive" id="reference-table">
+           <tr>
+           
+            <td>Reference Name</td>
+            <td>Reference Contact</td>
+            <td>Relation</td>
+          
+        </tr>
+          <% refData.forEach((ref,index) =>{%>
+        <tr>
+           
+            <td><input type="text" name="ref_name[]" value="<%= ref.reference_name %>" ></td>
+            <td><input type="text" name="ref_contact[]" value="<%= ref.reference_contact %>" id=""></td>
+            <td><input type="text" name="ref_relation[]" value="<%= ref.relation %>" ></td>
+            
+        </tr>
+        <%}); %>
+        </table>
+        <div class="col col-12 d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" id="update">Update</button>
+            <a href="/" class="btn btn-primary ms-3">Home</a>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script>
+    let referenceTable = document.getElementById("reference-table");
+    let minusBtn = document.getElementById("r-minus");
+    let plusBtn = document.getElementById("r-plus");
+    let rindex = <%=refData.length%>
+    plusBtn.addEventListener("click" , (e) => {
+         let newRow = referenceTable.insertRow();
+      newRow.insertCell(0).innerHTML =
+        `<input type="text" name="ref_name[]" >`;
+      newRow.insertCell(1).innerHTML =
+        `<input type="text" name="ref_contact[]" >`;
+      newRow.insertCell(2).innerHTML =
+        `<input type="text" name="ref_relation[]">`;
+        rindex++;
+    });
+
+    minusBtn.addEventListener("click", (e) => {
+        if(rindex > <%= refData.length %>){
+            referenceTable.deleteRow(-1);
+            rindex--;
+        }
+    });
+
+    document.getElementById("update").addEventListener("click" , () => {
+      document.getElementById("form").submit();
+    })
+
+  </script>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Skills</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <h1 class="m-3 text-center">Language Known</h1>
+    <form action="/edit-language" method="post" id="form">
+        <input type="hidden" name="id" value="<%=id%>">
+        
+        <table class="table table-responsive">
+          <tr>
+            <!-- <th>ID</th> -->
+            <th>Language</th>
+            <th>Can Read</th>
+            <th>Can Write</th>
+            <th>Can Speak</th>
+            
+          </tr>
+          <%lanData.forEach((item,index) => {%>
+              
+            <tr>
+                <td>
+                    <input type="hidden" name="lang[<%=index%>][name]" value="<%= item.name%>">
+                    <%= item.name%>
+                </td>
+                <td>
+                    <input type="checkbox" name="lang[<%=index%>][read]"  value="1" <%= item.can_read == 1 ? 'checked' : '' %>>
+                </td>
+                <td>
+                    <input type="checkbox" name="lang[<%=index%>][write]" value="1" <%= item.can_write == 1 ? 'checked' : '' %>>
+                </td>
+                <td>
+                    <input type="checkbox" name="lang[<%=index%>][speak]" value="1" <%= item.can_speak == 1 ? 'checked' : '' %>>
+                </td>
+                
+              </tr>
+          <%})%>  
+        </table>
+        <div class="col col-12 d-flex justify-content-center m-3">
+          <button type="button" id="update" class="btn btn-primary">Update</button>
+          <a href="/" class="text-decoration-none btn btn-danger ms-3">Back</a>
+
+        </div>
+    </form>
+  </body>
+  <script>
+    document.getElementById("update").addEventListener("click" , (e) => {
+        document.getElementById("form").submit();
+    })
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</html>

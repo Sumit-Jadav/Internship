@@ -11,6 +11,9 @@
   </head>
   <body>
     <h1>Techonology Data</h1>
+    <div class="col col-12 d-flex justify-content-end mb-3">
+      <a href="/edit-skill?id=<%=id%>" class="btn btn-primary">Edit</a> 
+    </div>
     <table class="table table-responsive">
       <tr>
         <th>ID</th>
@@ -22,8 +25,8 @@
         <tr>
             <td><%= item.id%></td>
             <td><%= item.technology_name%></td>
-            <td><%= item.is_beginner == 1 ? 'Beginner' : item.is_advance == 1 ? 'Intermediate' : 'Expert' %></td>  
-            <td><a href="/edit-skill?id=<%=item.id%>" class="btn btn-primary">Edit</a> <a href="/delete-skill?id=<%= item.id%>" class="btn btn-danger">Delete</a></td>
+            <td><%= item.is_beginner == 1 ? 'Beginner' : item.is_advance == 1 ? 'Intermediate' : item.is_expert == 1 ? 'Expert' : 'Not Proficient' %></td>  
+            <td><a href="/delete-skill?id=<%= item.id%>" class="btn btn-danger">Delete</a></td>
           </tr>
       <%})%>  
     </table>

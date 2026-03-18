@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 </head>
   <body><h1 style="text-align: center;">Work Experience</h1>
+    <div class="col col-12 d-flex justify-content-end">
+      <a href="/edit-work?id=<%= id %>" class="btn m-1 btn-primary">Edit</a>
+    </div>
     <table class="table table-responsive table-bordered ">
       <tr>
         <th>Sr No.</th>
@@ -32,7 +35,7 @@
             <td><%= item.ref_contact_name%></td>
             <td><%= item.ref_contact_number%></td>
             <td>
-              <a href="/edit-work?id=<%= item.id %>" class="btn m-1 btn-primary">Edit</a><a href="/delete-experience?id=<%= item.id %>" class="btn btn-danger">Delete</a>
+              <a href="/delete-experience?id=<%= item.id %>" class="btn btn-danger">Delete</a>
             </td>  
           </tr>
       <%})%>  
