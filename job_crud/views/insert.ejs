@@ -14,8 +14,6 @@
   </head>
 
   <body>
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
-
     <h1 style="text-align: center">Job Application</h1>
     <form id="form" method="post" action="/insertdata">
       <div class="basic-container">
@@ -268,10 +266,12 @@
           style="display: block; margin: 0 auto"
         />
       </div>
-      <input />
     </form>
   </body>
+  <script src="/justvalidate.js"></script>
+
   <script>
+    // const justvalidate = require("JustValidate");
     const validate = new window.JustValidate("#form");
 
     validate.addField("#fname", [
