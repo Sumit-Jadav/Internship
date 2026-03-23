@@ -9,10 +9,12 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
     />
      <!-- <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script> -->
+    <script src="/justvalidate.js"></script>
+
   </head>
   <body>
     <h1 style="text-align: center">Edit Application</h1>
-    <form action="/edit-application" method="POST" class="form container">
+    <form action="/edit-application" id="form" method="POST" class="form container">
       <input type="hidden" name="id" value="<%= appData.applicant_id %>" />
       <div class="row">
         <div class="col-6">
@@ -143,6 +145,7 @@
         </form>
 
   </body>
+  <script src="/justvalidate.js"></script>
   <script>
     const validate = new window.JustValidate("#form");
     validate.addField("#first_name", [
@@ -203,19 +206,19 @@
     ]);
   
     validate.addField("#dob", [
-      { rule: "required", errorMessage: "Date of Birth required" },
+      { rule: "required", errorMessage: "Birthdate required" },
       {
-        validator: (value) => {
-          const today = new Date();
-          const dob = new Date(value);
-            if(dob > today) {
-                return false;
-            }
-        },
-        errorMessage: "DOB cannot be in the future",
+        validator: (value) => new Date(value) <= new Date(),
+        errorMessage: "Birthdate cannot be future date",
       },
     ]);
   
+
+    
+
+
+
+
       validate.onSuccess((event) => {
         event.preventDefault();
         event.target.submit();

@@ -1,75 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Reference</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    />
-  </head>
-  <body>
-    <h1 class="m-3 text-center">Edit References</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Reference</title>
 
-    <div class="container">
-      <form action="/edit-reference" method="post" id="form">
-        <input type="hidden" name="id" value="<%=id%>">
-        <div class="col col-12 d-flex justify-content-end mb-3">
-          <a  class="btn btn-secondary" id="r-plus">+</a>
-          <a class="btn btn-primary ms-3" id="r-minus">-</a>
-        </div>
-        <table class="table table-bordered table-responsive" id="reference-table">
-           <tr>
-           
-            <td>Reference Name</td>
-            <td>Reference Contact</td>
-            <td>Relation</td>
-          
-        </tr>
-          <% refData.forEach((ref,index) =>{%>
-        <tr>
-           
-            <td><input type="text" name="ref_name[]" value="<%= ref.reference_name %>" ></td>
-            <td><input type="text" name="ref_contact[]" value="<%= ref.reference_contact %>" id=""></td>
-            <td><input type="text" name="ref_relation[]" value="<%= ref.relation %>" ></td>
-            
-        </tr>
-        <%}); %>
-        </table>
-        <div class="col col-12 d-flex justify-content-center">
-            <button type="button" class="btn btn-primary" id="update">Update</button>
-            <a href="/" class="btn btn-primary ms-3">Home</a>
-        </div>
-      </form>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"/>
+
+  <!-- JustValidate -->
+  <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+</head>
+
+<body>
+
+<h1 class="m-3 text-center">Edit References</h1>
+
+<div class="container">
+  <form action="/edit-reference" method="post" id="form">
+
+    <input type="hidden" name="id" value="<%=id%>">
+
+    <div class="d-flex justify-content-end mb-3">
+      <button type="button" class="btn btn-secondary" id="r-plus">+</button>
+      <button type="button" class="btn btn-primary ms-3" id="r-minus">-</button>
     </div>
-  </body>
-  <script>
-    let referenceTable = document.getElementById("reference-table");
-    let minusBtn = document.getElementById("r-minus");
-    let plusBtn = document.getElementById("r-plus");
-    let rindex = <%=refData.length%>
-    plusBtn.addEventListener("click" , (e) => {
-         let newRow = referenceTable.insertRow();
-      newRow.insertCell(0).innerHTML =
-        `<input type="text" name="ref_name[]" >`;
-      newRow.insertCell(1).innerHTML =
-        `<input type="text" name="ref_contact[]" >`;
-      newRow.insertCell(2).innerHTML =
-        `<input type="text" name="ref_relation[]">`;
-        rindex++;
-    });
 
-    minusBtn.addEventListener("click", (e) => {
-        if(rindex > <%= refData.length %>){
-            referenceTable.deleteRow(-1);
-            rindex--;
+    <table class="table table-bordered" id="reference-table">
+      <tr>
+        <th>Reference Name</th>
+        <th>Reference Contact</th>
+        <th>Relation</th>
+      </tr>
+
+      <% refData.forEach((ref,index) => { %>
+      <tr>
+        <td>
+          <input type="text" name="ref_name[]" class="refname<%=index%>"
+            value="<%= ref.reference_name %>">
+        </td>
+
+        <td>
+          <input type="text" name="ref_contact[]" class="refcontact<%=index%>"
+            value="<%= ref.reference_contact %>">
+        </td>
+
+        <td>
+          <input type="text" name="ref_relation[]" class="relation<%=index%>"
+            value="<%= ref.relation %>">
+        </td>
+      </tr>
+      <% }) %>
+
+    </table>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-primary">Update</button>
+      <a href="/" class="btn btn-secondary ms-3">Home</a>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  const validate = new JustValidate("#form");
+
+  let referenceTable = document.getElementById("reference-table");
+  let plusBtn = document.getElementById("r-plus");
+  let minusBtn = document.getElementById("r-minus");
+  let rindex = <%= refData.length %>;
+
+  // ✅ Apply validation
+  function applyValidation() {
+
+    for (let i = 0; i < rindex; i++) {
+
+      validate.addField(`.refname${i}`, [
+        { rule: "required", errorMessage: "Required" }
+      ]);
+
+      validate.addField(`.relation${i}`, [
+        { rule: "required", errorMessage: "Required" }
+      ]);
+
+      validate.addField(`.refcontact${i}`, [
+        { rule: "required", errorMessage: "Required" },
+        {
+          validator: (value) => /^[0-9]{10}$/.test(value),
+          errorMessage: "Must be 10 digits"
         }
-    });
+      ]);
+    }
+  }
 
-    document.getElementById("update").addEventListener("click" , () => {
-      document.getElementById("form").submit();
-    })
+  // initial validation
+  applyValidation();
 
-  </script>
+  // ➕ Add row
+  plusBtn.addEventListener("click", () => {
+
+    let newRow = referenceTable.insertRow();
+
+    newRow.innerHTML = `
+      <td><input type="text" name="ref_name[]" class="refname${rindex}"></td>
+      <td><input type="text" name="ref_contact[]" class="refcontact${rindex}"></td>
+      <td><input type="text" name="ref_relation[]" class="relation${rindex}"></td>
+    `;
+
+    rindex++;
+    applyValidation(); // 🔥 important
+  });
+
+  // ➖ Remove row
+  minusBtn.addEventListener("click", () => {
+    if (rindex > 1) {
+      referenceTable.deleteRow(-1);
+      rindex--;
+    }
+  });
+
+  // ✅ submit control
+  validate.onSuccess((event) => {
+    event.preventDefault();
+    event.target.submit();
+  });
+
+</script>
+
+</body>
 </html>

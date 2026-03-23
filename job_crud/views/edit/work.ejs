@@ -1,91 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <h1 class="text-center m-3">Edit Work Experience</h1>
-    <form action="/edit-work" id="form" method="post" >
-        <input type="hidden" name="id" value="<%=id%>">
-        <div class="col col-12 d-flex justify-content-end mb-3">
-          <a  class="btn btn-secondary" id="w-plus">+</a>
-          <a class="btn btn-primary ms-3" id="w-minus">-</a>
-        </div>
-        <table class="table table-responsive table-bordered " id="work-table">
-            <tr>
-    
-            <th>Company</th>
-            <th>Designation</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Annual Package</th>
-            <th>Reason to Leave</th>
-            <th>Reference Contact Name</th>
-            <th>Reference Contact Number</th>
-            
-            </tr>
-            <%workData.forEach((item,index) => {%>
-            <tr>
-                <td><input type="text" name="company[]" id="" value="<%= item.company_name%>"></td>
-                <td><input type="text" name="designation[]" value="<%= item.designation%>" id=""></td>
-                <td><input type="date" name="from[]" value="<%= new Date(fromDate[index].from_date).toISOString().split('T')[0] %>" ></td>
-                <td><input type="date" name="to[]" value="<%= new Date(toDate[index].to_date).toISOString().split('T')[0] %>" ></td>
-                <td><input type="text" name="package[]" value="<%= item.annual_package%>" id=""></td>
-                <td><input type="text" name="reason[]" value="<%= item.reason_to_leave%>" id=""></td>
-                <td><input type="text" name="ref_name[]" value="<%= item.ref_contact_name%>" id=""></td>
-                <td><input type="text" name="ref_contact[]" value="<%= item.ref_contact_number%>" id=""></td>
-                
-                </tr>
-            <%})%>  
-        </table>
-    </form>
-    <div class="row">
-        <div class="col col-12 d-flex justify-content-center">
-            <button type="button" class="btn btn-primary" id="update">Update</button>
-            <a href="/" class="btn btn-primary ms-3">Home</a>
-        </div>  
-    </div>  
-</body>
-<script>
-    let workTable = document.getElementById("work-table");
-    let plusBtn = document.getElementById("w-plus");
-    let minusBtn = document.getElementById("w-minus");
-    let windex = <%= workData.length%>;
-    plusBtn.addEventListener("click",() => {
-        let newRow = workTable.insertRow();
-      
-      newRow.insertCell(0).innerHTML =
-        `<input type="text" name="company[]" ">`;
-      newRow.insertCell(1).innerHTML =
-      `<input type="text" name="designation[]" >`;
-      newRow.insertCell(2).innerHTML =
-        `<input type="date" name="from[]" ">`;
-      newRow.insertCell(3).innerHTML =
-        `<input type="date" name="to[]" ">`;
-      newRow.insertCell(4).innerHTML =
-        `<input type="text" name="package[]" >`;
-      newRow.insertCell(5).innerHTML =
-        `<input type="text" name="reason[]" >`;
-        newRow.insertCell(6).innerHTML =
-          `<input type="text" name="ref_name[]" >`;
-      newRow.insertCell(7).innerHTML =
-        `<input type="text" name="ref_contact[]" >`;
-        windex++;
-    })
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Work Experience</title>
 
-    minusBtn.addEventListener("click" , () => {
-        if(windex > 1){
-            workTable.deleteRow(-1);
-            windex--;
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+  <!-- JustValidate -->
+  <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+</head>
+
+<body>
+
+<h1 class="text-center m-3">Edit Work Experience</h1>
+
+<form action="/edit-work" id="form" method="post">
+  <input type="hidden" name="id" value="<%=id%>">
+
+  <div class="col-12 d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-secondary" id="w-plus">+</button>
+    <button type="button" class="btn btn-primary ms-3" id="w-minus">-</button>
+  </div>
+
+  <table class="table table-bordered" id="work-table">
+    <tr>
+      <th>Company</th>
+      <th>Designation</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Annual Package</th>
+      <th>Reason</th>
+      <th>Ref Name</th>
+      <th>Ref Contact</th>
+    </tr>
+
+    <% workData.forEach((item,index) => { %>
+    <tr>
+      <td><input type="text" name="company[]" class="company<%=index%>" value="<%= item.company_name %>"></td>
+      <td><input type="text" name="designation[]" class="designation<%=index%>" value="<%= item.designation %>"></td>
+      <td><input type="date" name="from[]" class="from<%=index%>" value="<%= new Date(fromDate[index].from_date).toISOString().split('T')[0] %>"></td>
+      <td><input type="date" name="to[]" class="to<%=index%>" value="<%= new Date(toDate[index].to_date).toISOString().split('T')[0] %>"></td>
+      <td><input type="text" name="package[]" class="package<%=index%>" value="<%= item.annual_package %>"></td>
+      <td><input type="text" name="reason[]" class="reason<%=index%>" value="<%= item.reason_to_leave %>"></td>
+      <td><input type="text" name="ref_name[]" class="refname<%=index%>" value="<%= item.ref_contact_name %>"></td>
+      <td><input type="text" name="ref_contact[]" class="refcontact<%=index%>" value="<%= item.ref_contact_number %>"></td>
+    </tr>
+    <% }) %>
+  </table>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a href="/" class="btn btn-secondary ms-3">Home</a>
+  </div>
+</form>
+
+<script>
+  const validate = new JustValidate("#form");
+
+  let workTable = document.getElementById("work-table");
+  let plusBtn = document.getElementById("w-plus");
+  let minusBtn = document.getElementById("w-minus");
+  let windex = <%= workData.length %>;
+
+  // ✅ Apply validation
+  function applyValidation() {
+
+    for (let i = 0; i < windex; i++) {
+
+      validate.addField(`.company${i}`, [
+        { rule: "required" }
+      ]);
+
+      validate.addField(`.designation${i}`, [
+        { rule: "required" }
+      ]);
+
+      validate.addField(`.from${i}`, [
+        { rule: "required" }
+      ]);
+
+      validate.addField(`.to${i}`, [
+        {
+          validator: () => {
+            const from = document.querySelector(`.from${i}`).value;
+            const to = document.querySelector(`.to${i}`).value;
+            return from && to && new Date(from) <= new Date(to);
+          },
+          errorMessage: "To date must be after From date",
+        },
+      ]);
+
+      validate.addField(`.package${i}`, [
+        { rule: "required" },
+        { rule: "number" }
+      ]);
+
+      validate.addField(`.reason${i}`, [
+        { rule: "required" }
+      ]);
+
+      validate.addField(`.refname${i}`, [
+        { rule: "required" }
+      ]);
+
+      validate.addField(`.refcontact${i}`, [
+        { rule: "required" },
+        {
+          validator: (value) => /^[0-9]{10}$/.test(value),
+          errorMessage: "Must be 10 digits"
         }
-    })
-    
-    
-    document.getElementById("update").addEventListener("click" , (e) => {
-        document.getElementById("form").submit();
-    })
+      ]);
+    }
+  }
+
+  // initial validation
+  applyValidation();
+
+  // ➕ Add row
+  plusBtn.addEventListener("click", () => {
+    let newRow = workTable.insertRow();
+
+    newRow.innerHTML = `
+      <td><input type="text" name="company[]" class="company${windex}"></td>
+      <td><input type="text" name="designation[]" class="designation${windex}"></td>
+      <td><input type="date" name="from[]" class="from${windex}"></td>
+      <td><input type="date" name="to[]" class="to${windex}"></td>
+      <td><input type="text" name="package[]" class="package${windex}"></td>
+      <td><input type="text" name="reason[]" class="reason${windex}"></td>
+      <td><input type="text" name="ref_name[]" class="refname${windex}"></td>
+      <td><input type="text" name="ref_contact[]" class="refcontact${windex}"></td>
+    `;
+
+    windex++;
+    applyValidation(); // 🔥 important
+  });
+
+  // ➖ Remove row
+  minusBtn.addEventListener("click", () => {
+    if (windex > 1) {
+      workTable.deleteRow(-1);
+      windex--;
+    }
+  });
+
+  // ✅ submit control
+  validate.onSuccess((event) => {
+    event.preventDefault();
+    event.target.submit();
+  });
 </script>
+
+</body>
 </html>
