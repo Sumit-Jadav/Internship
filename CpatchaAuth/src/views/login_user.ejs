@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      html {
+        height: 100vh;
+        width: 100vw;
+      }
+      body {
+        height: 100%;
+      }
+    </style>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+  </head>
+  <body
+    class="d-flex flex-column justify-content-center align-items-center p-5"
+  >
+    <div class="" style="display: none" id="loader"></div>
+    <p class="text-danger text-center" id="error" style="display: none"></p>
+    <p class="text-center text-success" id="success" style="display: none"></p>
+    <form class="w-50" id="login-form">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="text-center text-secondary">Login</h1>
+        </div>
+        <div class="card-body d-flex flex-column gap-4">
+          <div class="row">
+            <input
+              type="text"
+              name="email"
+              id="email"
+              class="form-control"
+              placeholder="Enter Email"
+            />
+          </div>
+          <div class="row">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              placeholder="Enter password"
+            />
+          </div>
+          <div class="container w-50">
+            <img src="" id="captchaImg" alt="" height="60px" width="150px" />
+            <div class="btn btn-secondary" id="refreshBtn">Refresh</div>
+          </div>
+          <div class="container w-50">
+            <input
+              type="text"
+              name="captcha"
+              placeholder="Enter Captcha"
+              class="form-control"
+              id="captcha"
+            />
+          </div>
+          <div class="container w-50">
+            <input type="checkbox" name="remember" value="1" id="remember" />
+            <label for="remember">Remember Me</label>
+          </div>
+          <div class="row">
+            <input
+              type="submit"
+              value="Login"
+              id="submit"
+              class="btn btn-success"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <a href="/users/auth/register" class="link-primary"
+          >Don't have account? Register</a
+        >
+        <a href="/users/auth/get-user" class="link-primary">Forgot Password?</a>
+      </div>
+    </form>
+  </body>
+  <script>
+    let captchaImg = document.getElementById("captchaImg");
+    let refreshBtn = document.getElementById("refreshBtn");
+    let cpatchaTxt = document.getElementById("captcha");
+    let success = document.getElementById("success");
+    let error = document.getElementById("error");
+    let loginForm = document.getElementById("login-form");
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+    async function generateCaptcha() {
+      const res = await fetch("http://localhost:5000/captcha");
+      const data = await res.json();
+      const captchaURI = data.data[0];
+      captchaImg.src = captchaURI;
+      const hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "id");
+      hiddenField.setAttribute("value", data.data[1]);
+      hiddenField.setAttribute("id", "hiddenField");
+      loginForm.appendChild(hiddenField);
+    }
+    generateCaptcha();
+    refreshBtn.addEventListener("click", async (e) => {
+      generateCaptcha();
+    });
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const reqData = Object.fromEntries(formData);
+      if (!reqData.email || !reqData.password) {
+        error.innerText = "Email and Password both are required";
+        error.style.display = "block";
+
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 1000);
+        return;
+      }
+      const emailRegex = /^[a-zA-Z0-9\.-_]+@[a-zA-Z]+.[a-zA-Z]{3,5}$/;
+      if (!emailRegex.test(reqData.email)) {
+        console.log("here");
+
+        error.innerText = "Email Not valid";
+        error.style.display = "block";
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 1000);
+        return;
+      }
+
+      let res = await fetch("http://localhost:5000/users/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reqData),
+      });
+      const resData = await res.json();
+      if (resData.status == 500) {
+        error.innerText = resData.message;
+        error.style.display = "block";
+
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 1000);
+      } else if (resData.status == 404) {
+        error.innerText = resData.message;
+        error.style.display = "block";
+
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 1000);
+      } else if (resData.status == 400) {
+        error.innerText = resData.message;
+        error.style.display = "block";
+        document.getElementById("hiddenField").remove();
+        generateCaptcha();
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 1000);
+      } else if (resData.status == 401) {
+        error.innerText = resData.message;
+        error.style.display = "block";
+
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 1000);
+      } else if (resData.status == 403) {
+        error.innerText = resData.message;
+        error.style.display = "block";
+        setTimeout(() => {
+          error.innerText = "";
+          error.style.display = "none";
+        }, 2000);
+        document.getElementById("loader").style.display = "block";
+        document.getElementById("loader").style.zIndex = 1;
+
+        e.target.style.display = "none";
+        document.getElementById("loader").innerHTML = `
+            <div class="spinner-border fs-5 text-danger" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+        `;
+
+        setTimeout(() => {
+          document.getElementById("loader").style.display = "none";
+          e.target.style.display = "block";
+          location.href = "/users/auth/get-user";
+        }, 2000);
+      } else if (resData.status == 200) {
+        success.innerText = resData.message;
+        success.style.display = "block";
+
+        location.href = "/dashboard";
+      }
+    });
+  </script>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+  </head>
+  <body class="d-flex justify-content-center align-items-center p-5">
+    <form id="form" class="w-50">
+      <div class="card">
+        <p class="text-danger text-center" id="error-message"></p>
+        <p class="text-success text-center" id="success-message"></p>
+        <div class="card-header bg-secondary text-center">
+          <h1>Registration Form</h1>
+        </div>
+        <div class="card-body gap-2 d-flex flex-column justify-content-center">
+          <div class="container w-50">
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="form-control"
+              placeholder="Enter Email Address"
+            />
+          </div>
+
+          <div class="container w-50">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              placeholder="Enter Password"
+            />
+          </div>
+          <div class="container w-50">
+            <img src="" id="captchaImg" alt="" />
+            <div class="btn btn-secondary" id="refreshBtn">Refresh</div>
+          </div>
+          <div class="container w-50">
+            <input
+              type="text"
+              name="captcha"
+              placeholder="Enter Captcha"
+              class="form-control"
+              id="captcha"
+            />
+          </div>
+          <div class="container w-50">
+            <input
+              type="submit"
+              name="submit"
+              id="submit"
+              class="form-control btn btn-primary"
+              value="Submit"
+            />
+          </div>
+        </div>
+      </div>
+      <a href="/users/auth/login" class="link-primary"
+        >Already have account? Login</a
+      >
+    </form>
+  </body>
+  <script>
+    let captchaImg = document.getElementById("captchaImg");
+    let errorTxt = document.getElementById("error-message");
+    let successTxt = document.getElementById("success-message");
+    let registerForm = document.getElementById("form");
+    let refreshBtn = document.getElementById("refreshBtn");
+    let cpatchaTxt = document.getElementById("captcha");
+    async function generateCaptcha() {
+      const res = await fetch("http://localhost:5000/captcha");
+      const data = await res.json();
+      const captchaURI = data.data[0];
+      captchaImg.src = captchaURI;
+      const hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", "id");
+      hiddenField.setAttribute("value", data.data[1]);
+      hiddenField.setAttribute("id", "hiddenField");
+      registerForm.appendChild(hiddenField);
+    }
+    generateCaptcha();
+    refreshBtn.addEventListener("click", async (e) => {
+      generateCaptcha();
+    });
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let email = document.getElementById("email");
+      let password = document.getElementById("password");
+      const emailregex = /^[a-zA-Z0-9_\-]+@[a-z]+.com$/;
+      if (email.value == "" || password.value == "") {
+        errorTxt.innerText = "Email and Password both are required";
+        setTimeout(() => {
+          errorTxt.innerText = "";
+        }, 1000);
+        return false;
+      } else if (!emailregex.test(email.value)) {
+        errorTxt.innerText = "Email Not Valid";
+        setTimeout(() => {
+          errorTxt.innerText = "";
+        }, 1000);
+        return false;
+      } else if (captcha.value == "" || captcha.value.length == 0) {
+        errorTxt.innerText = "Captcha is required";
+        setTimeout(() => {
+          errorTxt.innerText = "";
+        }, 1000);
+        return false;
+      } else {
+        const formData = new FormData(e.target);
+        const reqBody = Object.fromEntries(formData);
+        const res = await fetch("http://localhost:5000/users/auth/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reqBody),
+        });
+        const resData = await res.json();
+        if (resData.status == 500) {
+          errorTxt.innerText = resData.message;
+          setTimeout(() => {
+            errorTxt.innerText = "";
+          }, 1000);
+        } else if (resData.status == 401) {
+          errorTxt.innerText = resData.message;
+          setTimeout(() => {
+            errorTxt.innerText = "";
+          }, 1000);
+        } else if (resData.status == 400) {
+          errorTxt.innerText = resData.message;
+          document.getElementById("hiddenField").remove();
+          generateCaptcha();
+          setTimeout(() => {
+            errorTxt.innerText = "";
+          }, 1000);
+        } else {
+          successTxt.innerText = resData.message;
+          location.href = "/users/auth/login";
+        }
+      }
+    });
+  </script>
+</html>
