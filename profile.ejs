@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style/pages/feed.css" />
+    <link rel="stylesheet" href="/style/pages/profile.css" />
+  </head>
+  <body >
+    <%- include("error_success") %>
+    <div class="container m-0 p-0 min-vh-100">
+      <div class="row  m-0 d-flex justify-content-between">
+        <div
+          class="col-1 col-md-2 col-xl-2 d-flex flex-column align-items-start align-items-xl-start py-3 pe-xl-4"
+        >
+          <a href="/" class="nav-link-x mb-2 fs-3"
+            ><i class="fa-brands fa-x-twitter"></i
+          ></a>
+          <a href="/" class="nav-link-x mb-2"
+            ><i class="fa-solid fa-house"></i
+            ><span class="d-none d-xl-inline">Home</span></a
+          >
+          <a href="#" class="nav-link-x mb-2" data-bs-toggle="modal" data-bs-target="#exploreModal"
+            ><i class="fa-solid fa-magnifying-glass"></i
+            ><span class="d-none d-xl-inline">Explore</span></a
+          >
+          
+          <a href="/profile" class="nav-link-x mb-2 fw-bold"
+            ><i class="fa-regular fa-user"></i
+            ><span class="d-none d-xl-inline">Profile</span></a
+          >
+          <% if (typeof isOwnProfile == 'undefined') { %>
+           
+            <a href="/auth/logout" class="nav-link-x mb-2"
+              ><i class="fa-solid fa-arrow-right-from-bracket"></i
+              ><span class="d-none d-xl-inline">Logout</span></a
+            >
+          <% } %>
+          <button class="btn-tweet mt-3 w-100 d-none d-xl-block">Tweet</button>
+          <button
+            class="btn-tweet mt-3 rounded-circle d-xl-none"
+            style="padding: 12px 14px"
+          >
+            <i class="fa-solid fa-feather"></i>
+          </button>
+        </div>
+
+      
+        <div class="col-10 col-md-9 col-xl-6 border-x p-0">
+      
+          <div
+            class="p-3 position-sticky top-0 bg-black d-flex align-items-center gap-4"
+            style="z-index: 10; opacity: 0.95; backdrop-filter: blur(12px)"
+          >
+            <a
+              href="/"
+              class="text-white fs-5"
+              style="
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+              "
+              ><i class="fa-solid fa-arrow-left"></i
+            ></a>
+            <div>
+              <h5 class="fw-bold m-0 text-white">
+                <%= user.first_name + " " + user.last_name %>
+              </h5>
+              <small class="text-secondary"><%= user.total %> Tweets</small>
+            </div>
+          </div>
+
+          <div class="profile-banner" style="background-image: url('<%= user.cover_image == null ? `` : `/uploads/images/${user.cover_image}` %>');"></div>
+          <div class="px-3 d-flex justify-content-between align-items-start">
+            <img
+              src="<%= user.profile_picture == null ? "/images/user-regular.png" : "/uploads/images/"+user.profile_picture %>"
+              alt="Profile"
+              class="profile-avatar bg-black"
+            />
+            <% if (typeof isOwnProfile !== 'undefined' && !isOwnProfile) { %>
+              <% if (typeof isFollowing !== 'undefined' && isFollowing) { %>
+                <button class="btn btn-danger unfollow-button mt-3 rounded-pill fw-bold px-3" onClick="handleUnfollow(this , <%= user.id %>)" data-userId="<%= user.id %>">Unfollow</button>
+              <% } else { %>
+                <button class="btn btn-light follow-button mt-3 rounded-pill fw-bold px-3" onClick="handleFollow(this)" data-userId="<%= user.id %>">Follow</button>
+              <% } %>
+            <% } else { %>
+              <button class="btn-edit-profile mt-3" type="button" data-bs-toggle="modal" data-bs-target="#editProfile">Edit profile</button>
+            <% } %>
+          </div>
+
+        
+          <div class="px-3 mt-3 mb-3">
+            <h4 class="fw-bold m-0 text-white">
+              <%= user.first_name + " " + user.last_name %>
+            </h4>
+            <p class="text-secondary mb-2">@<%= user.username %></p>
+            <p class="mb-2 text-white"><% if (user.bio == null) { %>
+              "Edit Bio"
+            <% }else { %>
+              <%- user.bio %>   
+            <%}%>
+            </p>
+            <div class="d-flex gap-3 text-secondary small mb-3">
+              <span
+                ><i class="fa-regular fa-calendar me-1"></i> Joined <%=
+                (user.joined_date).toLocaleString("en-US",{ month: 'long', year: 'numeric'}) %></span
+              >
+            </div>
+            <div class="d-flex gap-3 text-secondary small mb-3">
+              <span
+                ><i class="fa-solid fa-cake-candles"></i> BirthDate <%=
+                user.birthdate == null ? " - " : new Date(user.birthdate).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}) %></span
+              >
+            </div>
+            <div class="d-flex gap-4">
+              <span
+                ><span class="fw-bold text-white"><%= user.following.toLocaleString() %></span>
+                <span class="text-secondary">Following</span></span
+              >
+              <span
+                ><span class="fw-bold text-white"><%= user.followers.toLocaleString() %></span>
+                <span class="text-secondary">Followers</span></span
+              >
+            </div>
+          </div>
+
+          <div  class="d-flex justify-content-between border-b profile-tabs px-3">
+          <a href="#" class="nav-link tabs active text-decoration-none text-center flex-grow-1" data-target="tweet-content">Tweets</a>
+          <a href="#" class="nav-link tabs text-decoration-none text-center flex-grow-1" data-target="retweet-content">Retweets</a>
+         <a href="#" class="nav-link tabs text-decoration-none text-center flex-grow-1" data-target="following-content">Followings</a>
+        </div>
+
+
+        <div id="tweet-content" class="tab-pane active">
+          <% tweets.forEach(tweet => { %>
+            <div class="p-3 border-b hover-bg d-flex gap-3">
+              <img src='<%= user.profile_picture == null ? "/images/user-regular.png" : "/uploads/images/"+user.profile_picture %>' alt="User" class="tweet-avatar">
+              <div class="w-100">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <span class="fw-bold text-white">
+                    <a href="/user/<%= user.username %>" class="text-white text-decoration-none hover-underline"><%= user.first_name + " " + user.last_name %></a>
+                  </span>
+                  <span class="text-secondary">
+                    <a href="/user/<%= user.username %>" class="text-secondary text-decoration-none hover-underline">@<%= user.username %></a> · <%= timeAgo.format(tweet.created_at , "mini") %>
+                  </span>
+                  
+                </div>
+                <p class="mb-2 text-white"><%= tweet.tweet_content.length  != 0 ? tweet.tweet_content : "" %></p>
+                <% if (tweet.tweet_image != null) { %>
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <img src="/uploads/images/<%= tweet.tweet_image %>" class="w-75" alt="tweet image"  >
+                  </div>
+                <% } %>
+                <div class="d-flex justify-content-between text-secondary pe-5 mt-3">
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-regular fa-comment action-icon"></i> <span class="small">3</span></div>
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-solid fa-retweet action-icon"></i> <span class="small">1</span></div>
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-regular fa-heart action-icon"></i> <span class="small">15</span></div>
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-solid fa-arrow-up-from-bracket action-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <div id="retweet-content" class="tab-pane d-none">
+          <% if (retweets.length == 0) { %>
+            <div class="container d-flex justify-content-center p-2">
+              <h1 class="text-white">No Retweets</h1>
+            </div>
+          <% } %>
+          <% retweets.forEach(rtweet => { %>
+           
+           <div class="p-3 border-b hover-bg d-flex gap-3">
+              <img src='<%= user.profile_picture == null ? "/images/user-regular.png" : "/uploads/images/"+user.profile_picture %>' alt="User" class="tweet-avatar">
+              <div class="w-100">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                  <span class="fw-bold text-white">
+                    <a href="/user/<%= user.username %>" class="text-white text-decoration-none hover-underline"><%= user.first_name + " " + user.last_name %></a>
+                  </span>
+                  <span class="text-secondary">
+                    <a href="/user/<%= user.username %>" class="text-secondary text-decoration-none hover-underline">@<%= user.username %></a> · <%= timeAgo.format(rtweet.created_at , "mini") %>
+                  </span>
+                </div>
+                <p class="mb-2 text-white"><%= rtweet.tweet_content.length  != 0 ? rtweet.tweet_content : "" %></p>
+                <% if (rtweet.tweet_image != null) { %>
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <img src="/uploads/images/<%= rtweet.tweet_image %>" class="w-75" alt="tweet image"  >
+                  </div>
+                <% } %>
+                <div class="d-flex justify-content-between text-secondary pe-5 mt-3">
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-regular fa-comment action-icon"></i> <span class="small">3</span></div>
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-solid fa-retweet action-icon"></i> <span class="small">1</span></div>
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-regular fa-heart action-icon"></i> <span class="small">15</span></div>
+                  <div class="action-group d-flex align-items-center gap-2 cursor-pointer"><i class="fa-solid fa-arrow-up-from-bracket action-icon"></i></div>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+
+         <div id="following-content" class="tab-pane d-none">
+           <% if (followingUsers.length == 0) { %>
+            <div class="container d-flex justify-content-center p-2">
+              <h1 class="text-white">You do not follow any one</h1>
+            </div>
+           <% } %>
+          <div class="container mt-3">
+            <% followingUsers.forEach(fuser => { %>
+              <div class="d-flex justify-content-between  align-items-center mb-3">
+                   <div class="d-flex align-items-center gap-1">
+                     <img
+                       src="<%= fuser.profile_picture == null ? "/images/user-regular.png" : "/uploads/images/"+fuser.profile_picture %>"
+                       alt="User"
+                       class="tweet-avatar"
+                       style="width: 40px; height: 40px"
+                     />
+                     <div>
+                       <div class="fw-bold text-white" style="font-size: 0.9rem">
+                         <a href="/user/<%= fuser.username %>" class="text-white text-decoration-none hover-underline"><%= fuser.first_name + " " + fuser.last_name %></a>
+                       </div>
+                       <a href="/user/<%= fuser.username %>" class="text-secondary small text-decoration-none hover-underline">@<%= fuser.username %></a>
+                     </div>
+                   </div>
+                   <button class="btn btn-danger unfollow-button rounded-pill btn-sm fw-bold px-3" onClick="handleUnfollow(this , <%= fuser.id %>)" data-userId = <%= fuser.id %>>
+                     Unfollow
+                   </button>
+                 </div>
+           <% }) %>
+          </div>
+        </div>
+
+
+        </div>
+
+       
+        <div class="col-xl-4 d-none d-xl-block py-3 ps-4">
+          <div class="search-box d-flex align-items-center px-3 py-2 mb-3">
+            <i class="fa-solid fa-magnifying-glass text-secondary me-3"></i>
+            <input
+              type="text"
+              class="search-input w-100"
+              placeholder="Search"
+            />
+          </div>
+          <div class="trend-box p-3">
+            <h5 class="fw-bold mb-3 text-white">You might like</h5>
+         
+
+              <% recommendations.forEach(rec => { %>  
+                <div class="d-flex justify-content-between  align-items-center mb-3">
+                  <div class="d-flex align-items-center gap-1">
+                    <img
+                      src="<%= rec.profile_picture == null ? "/images/user-regular.png" : "/uploads/images/"+rec.profile_picture %>"
+                      alt="User"
+                      class="tweet-avatar"
+                      style="width: 40px; height: 40px"
+                    />
+                    <div>
+                      <div class="fw-bold text-white" style="font-size: 0.9rem">
+                        <a href="/user/<%= rec.username %>" class="text-white text-decoration-none hover-underline"><%= rec.first_name + " " + rec.last_name %></a>
+                      </div>
+                      <a href="/user/<%= rec.username %>" class="text-secondary small text-decoration-none hover-underline">@<%= rec.username %></a>
+                    </div>
+                  </div>
+                  <button class="btn btn-light follow-button rounded-pill btn-sm fw-bold px-3" onClick="handleFollow(this)" data-userId = <%= rec.id %>>
+                    Follow
+                  </button>
+                </div>
+              <% }) %>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+     <div id="search-user-content" class="tab-pane search-tab-pane d-none">
+           hiw
+    </div>
+
+        <div id="search-tweet-content" class="tab-pane search-tab-pane d-none">
+          hi  
+        </div>
+
+    <!-- Bootstrap Edit Profile Modal -->
+    <div class="modal fade " id="editProfile"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg " role="document">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile</h5>
+          
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <form id="edit-profile"  novalidate>
+                <input type="hidden" name="id" value="<%= user.id %>">
+                <div class="row">
+                  <div class="col col-12 col-sm-6 mb-1 form-floating">
+                    <input
+                      type="text"
+                      name="firstName"
+                      class="form-control bg-dark text-white w-100"
+                      id="firstName"
+                      value="<%= user.first_name %>"
+                      placeholder="First Name"
+                      required
+                    />
+                    <div class="invalid-feedback" id="firstNameError"></div>
+                    <label for="firstName" class="ps-4">First Name</label>
+                  </div>
+                  <div class="col col-12 col-sm-6 mb-1 form-floating">
+                    <input
+                      type="text"
+                      name="lastName"
+                      class="form-control bg-dark text-white w-100"
+                      id="lastName"
+                      value="<%= user.last_name%>"
+                      placeholder="Last Name"
+                      required
+                      />
+                    <div class="invalid-feedback" id="lastNameError"></div>
+                    <label for="lastName" class="ps-4">Last Name</label>
+                  </div>
+                  <div class="col col-12 col-sm-12 mb-1 form-floating">
+                    <input
+                      type="date"
+                      name="dob"
+                      class="form-control bg-dark text-white w-100"
+                      id="dob"
+                      value="<%= user.birthdate == null ? '' : new Date(user.birthdate).toISOString().split('T')[0] %>"
+                      placeholder="DOB"
+                      required
+                      />
+                    <div class="invalid-feedback" id="dobError"></div>
+                    <label for="dob" class="ps-4">DOB</label>
+                  </div>
+                  <div class="col col-12 col-sm-12">
+                    <div class="input-group mb-3">
+                      <input type="file" class="form-control  bg-dark text-white" id="profilePic" name="profile">
+                      <label class="input-group-text" for="profilePic">Profile Pic</label>
+                    </div>
+                  </div>
+                  <label class="form-label mb-1" >Bio</label>
+                  <div class="col col-12  editor mb-1"><%- user.bio == null ? '' : user.bio %></div>
+                    <div class="invalid-feedback" id="bioError"></div>
+
+                  <div class="col col-12 col-sm-12">
+                    <div class="input-group mb-3">
+                      <input type="file" class="form-control bg-dark text-white" id="profilePic" name="cover">
+                      <label class="input-group-text" for="profilePic">Cover Pic</label>
+                    </div>
+                  </div>
+                  <div class="col col-12 col-sm-12 d-flex justify-content-center mt-1">
+                    <button type="submit" class="btn bg-white">Edit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Explore Profile Modal -->
+    <div class="modal fade " id="exploreModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-center modal-lg " role="document">
+        <div class="modal-content bg-dark">
+          <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title" id="exampleModalLongTitle">Search something</h5>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                  <div class="col col-12 col-sm-12 mb-1 form-floating">
+                    <input
+                      type="search"
+                      name="search"
+                      class="form-control rounded-pill bg-dark text-white w-100"
+                      id="search"
+                      placeholder="Search"
+                      required
+                    />
+                    <label for="search" class="ps-4">Search</label>
+                  </div>
+                </div>
+              
+              <div  class="d-flex justify-content-between border-b mt-3 profile-tabs px-3">
+                <a href="#" class="nav-link search-tabs active text-decoration-none text-center flex-grow-1" data-target="search-user-content">Users</a>
+                <a href="#" class="nav-link search-tabs  text-decoration-none text-center flex-grow-1" data-target="search-tweet-content">Tweets</a>
+             </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <script src="/js/script.js"></script>
+  <script src="/js/pages/profile.js"></script>
+
+</html>
